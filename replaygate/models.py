@@ -3,37 +3,37 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
 
-class WorkflowEngine(str, Enum):
+class WorkflowEngine(StrEnum):
     TEMPORAL = "temporal"
 
 
-class ReplayStatus(str, Enum):
+class ReplayStatus(StrEnum):
     PASSED = "passed"
     FAILED = "failed"
     SKIPPED = "skipped"
     ERROR = "error"
 
 
-class CompatibilityStatus(str, Enum):
+class CompatibilityStatus(StrEnum):
     COMPATIBLE = "compatible"
     INCOMPATIBLE = "incompatible"
     UNKNOWN = "unknown"
 
 
-class RiskLevel(str, Enum):
+class RiskLevel(StrEnum):
     LOW = "low"
     MEDIUM = "medium"
     HIGH = "high"
     CRITICAL = "critical"
 
 
-class FailureKind(str, Enum):
+class FailureKind(StrEnum):
     NONDETERMINISM = "nondeterminism"
     UNKNOWN_WORKFLOW_TYPE = "unknown_workflow_type"
     MISSING_HISTORY = "missing_history"
@@ -139,7 +139,7 @@ class ReplayRun(BaseModel):
         started_at: datetime,
         finished_at: datetime,
         config_path: str | None = None,
-    ) -> "ReplayRun":
+    ) -> ReplayRun:
         duration_ms = int((finished_at - started_at).total_seconds() * 1000)
         return cls(
             started_at=started_at,
@@ -149,7 +149,7 @@ class ReplayRun(BaseModel):
         )
 
     @classmethod
-    def now(cls) -> "ReplayRun":
+    def now(cls) -> ReplayRun:
         current = datetime.now(tz=UTC)
         return cls.from_times(current, current)
 

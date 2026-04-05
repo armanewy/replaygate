@@ -25,11 +25,11 @@ Ship a working MVP for pre-deploy workflow replay verification with a real Tempo
 
 ### Milestone 2: Verification engine
 
-- [ ] Verification orchestration
-- [ ] Policy engine
-- [ ] JSON report generation
-- [ ] Markdown report generation
-- [ ] Unit tests
+- [x] Verification orchestration
+- [x] Policy engine
+- [x] JSON report generation
+- [x] Markdown report generation
+- [x] Unit tests
 
 ### Milestone 3: Temporal adapter
 
