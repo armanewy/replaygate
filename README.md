@@ -55,9 +55,22 @@ Replay Gate is a pre-deploy safety gate for that class of failure.
 
 ## Quickstart
 
+Replay Gate currently supports Python 3.11 through 3.13. Python 3.14 is not supported yet.
+
+macOS/Linux:
+
 ```bash
-python -m venv .venv
+python3.12 -m venv .venv
 . .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e ".[dev,temporal]"
+```
+
+Windows PowerShell:
+
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 python -m pip install -e ".[dev,temporal]"
 ```

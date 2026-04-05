@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Python 3.11+
+- Python 3.11-3.13
 - Temporal extra dependencies for replay: installed through `.[temporal]`
 
 ## Local Setup

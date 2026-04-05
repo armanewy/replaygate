@@ -4,7 +4,7 @@
 
 Replay Gate only fully implements Temporal in the MVP. Durable workflow replay risks are real for several engines, but trying to cover Azure Durable Functions and Step Functions now would dilute the quality of the core verification path. The architecture will keep adapters explicit so those engines can be added later.
 
-## D-002: Python 3.11+ for delivery speed and testability
+## D-002: Python 3.11-3.13 for delivery speed and testability
 
 Python provides fast iteration for CLI tooling, strong library support for typed config and reporting, and an easy path to deterministic automated tests. The MVP will use:
 
@@ -13,6 +13,8 @@ Python provides fast iteration for CLI tooling, strong library support for typed
 - `PyYAML` for config loading
 - `rich` for console output
 - `pytest` for tests
+
+The project currently caps support below Python 3.14 because core binary dependencies in the MVP stack are not yet reliable there.
 
 ## D-003: CLI-first before any web surface
 
