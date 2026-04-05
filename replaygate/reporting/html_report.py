@@ -23,6 +23,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       --paper-line: rgba(45, 54, 69, 0.08);
       --panel: #fffdf7;
       --ink: #1f2530;
+      --ink-soft: #475160;
       --muted: #5c6370;
       --line: #d8ccb5;
       --line-strong: #b9aa8d;
@@ -738,21 +739,297 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       background: rgba(255,255,255,0.6);
     }
 
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 6;
+      display: grid;
+      grid-template-columns: minmax(220px, 1.2fr) minmax(0, 2fr);
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+      padding: 12px 16px;
+      border-bottom: 3px solid #0b1421;
+      background: rgba(19, 29, 43, 0.96);
+      color: #f3f1e9;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(10px);
+    }
+
+    .topbar-title {
+      display: grid;
+      gap: 4px;
+    }
+
+    .topbar-brand {
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(233, 238, 244, 0.72);
+    }
+
+    .topbar-project {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff9f1;
+    }
+
+    .topbar-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .topbar-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.08);
+      color: #f3f1e9;
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .topbar-pill strong {
+      font-size: 0.95rem;
+      color: #fff9f1;
+    }
+
+    .topbar-pill.failed strong,
+    .topbar-pill.failed { color: #ffd5cc; }
+    .topbar-pill.passed strong,
+    .topbar-pill.passed { color: #d7eee7; }
+    .topbar-pill.error strong,
+    .topbar-pill.error { color: #f2d8dd; }
+
+    .report-shell {
+      display: grid;
+      gap: 18px;
+    }
+
+    .report-head {
+      display: grid;
+      gap: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line-strong);
+    }
+
+    .report-kicker {
+      color: var(--navy-soft);
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .report-head h1 {
+      margin-top: 6px;
+      font-size: 2rem;
+      max-width: none;
+    }
+
+    .report-meta {
+      margin-top: 6px;
+      color: var(--ink-soft);
+      font-size: 0.95rem;
+    }
+
+    .report-utility {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+
+    .utility-item {
+      padding: 12px 14px;
+      border-left: 3px solid var(--navy-soft);
+      background: rgba(255,255,255,0.62);
+    }
+
+    .subnav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(22,38,59,0.12);
+    }
+
+    .subnav a {
+      padding: 8px 10px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(22,38,59,0.12);
+      color: var(--navy-soft);
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .section-block {
+      display: grid;
+      gap: 12px;
+    }
+
+    .section-block .section-heading {
+      margin-bottom: 0;
+    }
+
+    .two-up {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .plain-panel {
+      padding: 18px;
+      border: 1px solid rgba(22,38,59,0.12);
+      background: rgba(255,255,255,0.72);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .plain-panel h3 {
+      margin-bottom: 8px;
+      font-size: 1.15rem;
+    }
+
+    .plain-list {
+      display: grid;
+      gap: 10px;
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .plain-list li {
+      padding: 10px 12px;
+      border-left: 3px solid var(--fail);
+      background: rgba(255,255,255,0.68);
+      color: var(--ink);
+    }
+
+    .diagnosis-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .diagnosis-item {
+      display: grid;
+      gap: 5px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(22,38,59,0.1);
+    }
+
+    .diagnosis-item:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .diagnosis-item strong {
+      color: var(--ink);
+    }
+
+    .report-shell table {
+      min-width: 0;
+      table-layout: fixed;
+    }
+
+    .report-shell td,
+    .report-shell th {
+      word-break: break-word;
+    }
+
+    .compact-table th:nth-child(1),
+    .compact-table td:nth-child(1) { width: 16%; }
+    .compact-table th:nth-child(2),
+    .compact-table td:nth-child(2) { width: 10%; }
+    .compact-table th:nth-child(3),
+    .compact-table td:nth-child(3) { width: 10%; }
+    .compact-table th:nth-child(4),
+    .compact-table td:nth-child(4) { width: 18%; }
+    .compact-table th:nth-child(5),
+    .compact-table td:nth-child(5) { width: 12%; }
+
+    .results-table th:nth-child(1),
+    .results-table td:nth-child(1) { width: 10%; }
+    .results-table th:nth-child(2),
+    .results-table td:nth-child(2) { width: 14%; }
+    .results-table th:nth-child(3),
+    .results-table td:nth-child(3) { width: 16%; }
+    .results-table th:nth-child(4),
+    .results-table td:nth-child(4) { width: 14%; }
+    .results-table th:nth-child(5),
+    .results-table td:nth-child(5) { width: 24%; }
+    .results-table th:nth-child(6),
+    .results-table td:nth-child(6) { width: 10%; }
+    .results-table th:nth-child(7),
+    .results-table td:nth-child(7) { width: 12%; }
+
+    .advanced-panel {
+      border: 2px solid var(--line);
+      background: rgba(255,255,255,0.72);
+      box-shadow: var(--shadow);
+    }
+
+    .advanced-panel summary {
+      padding: 16px 18px;
+      cursor: pointer;
+      color: var(--navy);
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .advanced-panel[open] summary {
+      border-bottom: 1px solid rgba(22,38,59,0.12);
+    }
+
+    .advanced-body {
+      display: grid;
+      gap: 12px;
+      padding: 18px;
+    }
+
     @media (max-width: 1120px) {
+      .topbar {
+        grid-template-columns: 1fr;
+      }
+      .topbar-strip {
+        justify-content: flex-start;
+      }
       .page-grid { grid-template-columns: 1fr; }
-      .rail { position: static; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+      .rail { display: none; }
       .hero { grid-template-columns: 1fr; }
       .summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .two-up,
+      .spotlight-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 760px) {
       main { padding-inline: 14px; }
-      .rail { grid-template-columns: 1fr; }
+      .topbar-pill {
+        width: 100%;
+        justify-content: space-between;
+      }
       .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .filters { grid-template-columns: 1fr; }
+      .subnav { display: grid; }
       .breakdown-row { grid-template-columns: 1fr; }
       .hero-stats,
       .rail-stats { grid-template-columns: 1fr 1fr; }
+      .report-head h1 {
+        font-size: 1.6rem;
+      }
 
       table,
       thead,
@@ -796,242 +1073,194 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   </style>
 </head>
 <body>
-  <main>
-    <div class="page-grid">
-      <aside class="rail">
-        <section class="rail-card">
-          <div class="eyebrow">Verdict</div>
-          <div class="rail-status {{ view.verdict|lower }}">{{ view.verdict }}</div>
+  <div class="topbar">
+    <div class="topbar-title">
+      <span class="topbar-brand">Replay Gate</span>
+      <span class="topbar-project">{{ view.project_name }}</span>
+    </div>
+    <div class="topbar-strip">
+      <span class="topbar-pill {{ view.verdict|lower }}"><strong>{{ view.verdict }}</strong></span>
+      <span class="topbar-pill"><strong>{{ view.histories_checked }}</strong> checked</span>
+      <span class="topbar-pill"><strong>{{ view.failed }}</strong> failed</span>
+      <span class="topbar-pill"><strong>{{ dominant_failure.label if dominant_failure else "none" }}</strong> dominant failure</span>
+      <span class="topbar-pill"><strong>{{ view.policy_decision }}</strong> policy</span>
+    </div>
+  </div>
+
+  <main class="report-shell">
+    <header class="report-head">
+      <div>
+        <div class="report-kicker">Replay verification report</div>
+        <h1>{{ view.project_name }}</h1>
+        <p class="report-meta">Project {{ view.project_name }} · Engine {{ view.engine }} · Generated {{ view.generated_at }}{% if view.git_sha %} · Git SHA {{ view.git_sha }}{% endif %}</p>
+      </div>
+      <div class="report-utility">
+        <div class="utility-item"><div class="eyebrow">Config</div><div class="meta-value">{{ view.config_path }}</div></div>
+        <div class="utility-item"><div class="eyebrow">Selection strategy</div><div class="meta-value">{{ view.selection_strategy }}</div></div>
+        <div class="utility-item"><div class="eyebrow">Adapter mode</div><div class="meta-value">{{ view.adapter_mode }}</div></div>
+        <div class="utility-item"><div class="eyebrow">Tool version</div><div class="meta-value">{{ view.tool_version }}</div></div>
+      </div>
+    </header>
+
+    <nav class="subnav" aria-label="Report sections">
+      {% for link in section_links %}
+      <a href="#{{ link.id }}">{{ link.label }}</a>
+      {% endfor %}
+    </nav>
+
+    <section id="why-this-failed" class="section section-block">
+      <div class="section-heading">
+        <h2>{{ diagnosis_heading }}</h2>
+        <p>The first screen is optimized for the deployment decision: what failed, what is affected, and what to do next.</p>
+      </div>
+      <div class="two-up">
+        <article class="plain-panel">
+          <div class="eyebrow">Policy decision</div>
+          <h3>{{ view.policy_decision|upper }}</h3>
           <p>{{ view.policy_summary }}</p>
-          <div class="rail-stats">
-            <div class="rail-stat"><strong>{{ view.histories_checked }}</strong><span>Histories</span></div>
-            <div class="rail-stat"><strong>{{ view.failed }}</strong><span>Failed</span></div>
-            <div class="rail-stat"><strong>{{ view.errored }}</strong><span>Errors</span></div>
-            <div class="rail-stat"><strong>{{ workflows_at_risk }}</strong><span>At risk</span></div>
-          </div>
-        </section>
-
-        <nav class="rail-card" aria-label="Report sections">
-          <div class="eyebrow">Jump To</div>
-          <ul class="nav-list">
-            {% for link in section_links %}
-            <li><a href="#{{ link.id }}">{{ link.label }}</a></li>
-            {% endfor %}
-          </ul>
-        </nav>
-
-        <section class="rail-card">
-          <div class="eyebrow">Artifacts</div>
-          {% if view.artifacts %}
-          <ul class="rule-list">
-            {% for artifact in view.artifacts %}
-            <li><strong>{{ artifact.label }}</strong><br><span class="artifact-path">{{ artifact.path }}</span></li>
+          {% if view.violations %}
+          <ul class="plain-list">
+            {% for violation in view.violations %}
+            <li>{{ violation }}</li>
             {% endfor %}
           </ul>
           {% else %}
-          <p class="empty">No artifact paths recorded.</p>
+          <p class="empty" style="margin-top: 12px;">No policy violations.</p>
           {% endif %}
-        </section>
-      </aside>
-
-      <div class="content">
-        <header class="hero">
-          <section class="panel">
-            <div class="eyebrow">Replay Gate Report</div>
-            <h1>{{ view.project_name }}</h1>
-            <p class="hero-copy">Deployment-safety verification for durable workflow replay compatibility before rollout.</p>
-            <div class="chip-row">
-              <span class="chip">Engine {{ view.engine }}</span>
-              <span class="chip">Generated {{ view.generated_at }}</span>
-              <span class="chip">Tool {{ view.tool_version }}</span>
-              {% if view.git_sha %}<span class="chip">Git SHA {{ view.git_sha }}</span>{% endif %}
-            </div>
-            <div class="meta-grid">
-              <div class="meta-card"><div class="eyebrow">Config</div><div class="meta-value">{{ view.config_path }}</div></div>
-              <div class="meta-card"><div class="eyebrow">Selection Strategy</div><div class="meta-value">{{ view.selection_strategy }}</div></div>
-              <div class="meta-card"><div class="eyebrow">Adapter Mode</div><div class="meta-value">{{ view.adapter_mode }}</div></div>
-            </div>
-          </section>
-
-          <section id="verdict" class="panel verdict-card">
-            <div class="eyebrow">Verdict</div>
-            <div class="verdict-header">
-              <div>
-                <div class="status-text">{{ view.verdict }}</div>
-                <p>{{ view.policy_summary }}</p>
-              </div>
-              <span class="badge badge-{{ view.policy_decision }}">{{ view.policy_decision|upper }}</span>
-            </div>
-            <div class="hero-stats">
-              <div class="hero-stat"><div class="hero-stat-value">{{ view.histories_checked }}</div><span class="hero-stat-label">Histories checked</span></div>
-              <div class="hero-stat"><div class="hero-stat-value">{{ pass_rate }}%</div><span class="hero-stat-label">Pass rate</span></div>
-              <div class="hero-stat"><div class="hero-stat-value">{{ workflows_at_risk }}</div><span class="hero-stat-label">Workflow types at risk</span></div>
-              <div class="hero-stat"><div class="hero-stat-value">{{ dominant_failure.label if dominant_failure else "none" }}</div><span class="hero-stat-label">Dominant failure</span></div>
-            </div>
-          </section>
-        </header>
-
-        <section id="verification-summary" class="section">
-          <div class="section-heading">
-            <h2>Verification Summary</h2>
-            <p>Counts stay aligned with the CLI, GitHub markdown summary, and machine-readable JSON report.</p>
-          </div>
-          <div class="summary-grid">
-            <article class="card summary-card neutral"><div class="metric">{{ view.histories_checked }}</div><div class="metric-label">Total histories</div></article>
-            <article class="card summary-card pass"><div class="metric">{{ view.passed }}</div><div class="metric-label">Passed</div></article>
-            <article class="card summary-card fail"><div class="metric">{{ view.failed }}</div><div class="metric-label">Failed</div></article>
-            <article class="card summary-card warn"><div class="metric">{{ view.skipped }}</div><div class="metric-label">Skipped</div></article>
-            <article class="card summary-card error"><div class="metric">{{ view.errored }}</div><div class="metric-label">Errors</div></article>
-            <article class="card summary-card neutral"><div class="metric">{{ view.workflow_types }}</div><div class="metric-label">Workflow types covered</div></article>
-          </div>
-        </section>
-
-        <section id="policy-decision" class="section">
-          <div class="section-heading">
-            <h2>Policy Decision</h2>
-            <p>Replay Gate normalizes adapter results, then applies the configured policy thresholds here.</p>
-          </div>
-          <div class="spotlight-grid">
-            <article class="spotlight">
-              <div class="eyebrow">Decision</div>
-              <div class="spotlight-value">{{ view.policy_decision|upper }}</div>
-              <p>{{ violation_count }} violated rule{% if violation_count != 1 %}s{% endif %}</p>
-            </article>
-            <article class="spotlight">
-              <div class="eyebrow">Most Affected Workflow</div>
-              <div class="spotlight-value">{{ highlight_workflow.workflow_type if highlight_workflow else "none" }}</div>
+        </article>
+        <article class="plain-panel">
+          <div class="eyebrow">Diagnosis</div>
+          <div class="diagnosis-grid">
+            <div class="diagnosis-item">
+              <span class="eyebrow">Most affected workflow</span>
+              <strong>{{ highlight_workflow.workflow_type if highlight_workflow else "none" }}</strong>
               <p>{% if highlight_workflow %}Risk {{ highlight_workflow.risk_level.value }} · {{ highlight_workflow.failed }} failed of {{ highlight_workflow.checked }} checked{% else %}No workflow breakdown available.{% endif %}</p>
-            </article>
-            <article class="spotlight">
-              <div class="eyebrow">Dominant Failure</div>
-              <div class="spotlight-value">{{ dominant_failure.label if dominant_failure else "none" }}</div>
-              <p>{% if dominant_failure %}{{ dominant_failure.count }} matching histor{% if dominant_failure.count == 1 %}y{% else %}ies{% endif %}{% else %}No failures recorded.{% endif %}</p>
-            </article>
-          </div>
-          <div class="panel">
-            <p>{{ view.policy_summary }}</p>
-            {% if view.violations %}
-            <ul class="rule-list" style="margin-top: 14px;">
-              {% for violation in view.violations %}
-              <li>{{ violation }}</li>
-              {% endfor %}
-            </ul>
-            {% else %}
-            <p class="empty" style="margin-top: 14px;">No policy violations.</p>
-            {% endif %}
-          </div>
-        </section>
-
-        <section id="failure-breakdown" class="section">
-          <div class="section-heading">
-            <h2>Failure Breakdown</h2>
-            <p>Failure kinds are grouped after normalization so the categories stay consistent across every UX surface.</p>
-          </div>
-          <div class="panel">
-            {% if view.failure_breakdown %}
-            <div class="breakdown-list">
-              {% for item in view.failure_breakdown %}
-              <div class="breakdown-row">
-                <strong>{{ item.label }}</strong>
-                <div class="bar"><span style="width: {{ (item.count / failure_max * 100) if failure_max else 0 }}%"></span></div>
-                <div class="count">{{ item.count }} · {{ ((item.count / view.histories_checked) * 100) | round(0) | int }}%</div>
-              </div>
-              {% endfor %}
             </div>
-            {% else %}
-            <p class="empty">No failures recorded.</p>
-            {% endif %}
-          </div>
-        </section>
-
-        <section id="workflow-type-breakdown" class="section">
-          <div class="section-heading">
-            <h2>Workflow Type Breakdown</h2>
-            <p>Use this view to see whether risk is isolated to one workflow type or spread across the candidate module.</p>
-          </div>
-          <div class="panel table-card">
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Workflow type</th>
-                    <th>Checked</th>
-                    <th>Passed</th>
-                    <th>Failed</th>
-                    <th>Skipped</th>
-                    <th>Errors</th>
-                    <th>Dominant failure</th>
-                    <th>Risk</th>
-                    <th>Notes</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for row in workflow_rows %}
-                  <tr>
-                    <td data-label="Workflow type"><strong>{{ row.workflow_type }}</strong></td>
-                    <td data-label="Checked">{{ row.checked }}</td>
-                    <td data-label="Passed">{{ row.passed }}</td>
-                    <td data-label="Failed">{{ row.failed }}</td>
-                    <td data-label="Skipped">{{ row.skipped }}</td>
-                    <td data-label="Errors">{{ row.errored }}</td>
-                    <td data-label="Dominant failure"><span class="badge {{ 'badge-kind-' ~ row.dominant_failure_kind.value if row.dominant_failure_kind else 'badge-neutral' }}">{{ row.dominant_failure_kind.value if row.dominant_failure_kind else "none" }}</span></td>
-                    <td data-label="Risk"><span class="badge badge-risk-{{ row.risk_level.value }}">{{ row.risk_level.value }}</span></td>
-                    <td data-label="Notes">{{ row.notes or "" }}</td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
+            <div class="diagnosis-item">
+              <span class="eyebrow">Primary cause</span>
+              <strong>{{ dominant_failure.label if dominant_failure else "none" }}</strong>
+              <p>{{ top_likely_cause }}</p>
+            </div>
+            <div class="diagnosis-item">
+              <span class="eyebrow">Recommended next action</span>
+              <strong>{{ top_remediation }}</strong>
             </div>
           </div>
-        </section>
+        </article>
+      </div>
+      <article class="plain-panel">
+        <div class="section-heading" style="margin-bottom: 12px;">
+          <h3>Failure breakdown</h3>
+          <p>Failure kinds are normalized before rendering so the categories stay consistent across every surface.</p>
+        </div>
+        {% if view.failure_breakdown %}
+        <div class="breakdown-list">
+          {% for item in view.failure_breakdown %}
+          <div class="breakdown-row">
+            <strong>{{ item.label }}</strong>
+            <div class="bar"><span style="width: {{ (item.count / failure_max * 100) if failure_max else 0 }}%"></span></div>
+            <div class="count">{{ item.count }} · {{ ((item.count / view.histories_checked) * 100) | round(0) | int }}%</div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="empty">No failures recorded.</p>
+        {% endif %}
+      </article>
+    </section>
 
-        <section id="top-failing-histories" class="section">
-          <div class="section-heading">
-            <h2>Top Failing Histories</h2>
-            <p>These are ranked by risk first so the most important replay incompatibilities land near the top.</p>
+    <section id="verification-summary" class="section">
+      <div class="section-heading">
+        <h2>Verification Summary</h2>
+        <p>Counts stay aligned with the CLI, GitHub markdown summary, and machine-readable JSON report.</p>
+      </div>
+      <div class="summary-grid">
+        <article class="card summary-card neutral"><div class="metric">{{ view.histories_checked }}</div><div class="metric-label">Total histories</div></article>
+        <article class="card summary-card pass"><div class="metric">{{ view.passed }}</div><div class="metric-label">Passed</div></article>
+        <article class="card summary-card fail"><div class="metric">{{ view.failed }}</div><div class="metric-label">Failed</div></article>
+        <article class="card summary-card warn"><div class="metric">{{ view.skipped }}</div><div class="metric-label">Skipped</div></article>
+        <article class="card summary-card error"><div class="metric">{{ view.errored }}</div><div class="metric-label">Errors</div></article>
+        <article class="card summary-card neutral"><div class="metric">{{ view.workflow_types }}</div><div class="metric-label">Workflow types covered</div></article>
+      </div>
+    </section>
+
+    <section id="workflow-type-breakdown" class="section">
+      <div class="section-heading">
+        <h2>Affected Workflow Types</h2>
+        <p>Use this table to see whether replay risk is isolated to one workflow or spread across the candidate module.</p>
+      </div>
+      <div class="panel table-card">
+        <div class="table-wrap">
+          <table class="compact-table">
+            <thead>
+              <tr>
+                <th>Workflow</th>
+                <th>Checked</th>
+                <th>Failed</th>
+                <th>Dominant failure</th>
+                <th>Risk</th>
+                <th>Note</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in workflow_rows %}
+              <tr>
+                <td data-label="Workflow"><strong>{{ row.workflow_type }}</strong></td>
+                <td data-label="Checked">{{ row.checked }}</td>
+                <td data-label="Failed">{{ row.failed }}</td>
+                <td data-label="Dominant failure"><span class="badge {{ 'badge-kind-' ~ row.dominant_failure_kind.value if row.dominant_failure_kind else 'badge-neutral' }}">{{ row.dominant_failure_kind.value if row.dominant_failure_kind else "none" }}</span></td>
+                <td data-label="Risk"><span class="badge badge-risk-{{ row.risk_level.value }}">{{ row.risk_level.value }}</span></td>
+                <td data-label="Note">{{ row.notes or "" }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="top-failing-histories" class="section">
+      <div class="section-heading">
+        <h2>Top Failing Histories</h2>
+        <p>These are the clearest examples of what blocked replay safety for this run.</p>
+      </div>
+      {% if view.top_failures %}
+      <div class="issue-grid">
+        {% for result in view.top_failures %}
+        <article class="card issue-card">
+          <div class="issue-head">
+            <div>
+              <div class="eyebrow">{{ result.workflow_type }}</div>
+              <h3>{{ result.history_id }}</h3>
+            </div>
+            <div class="chip-row" style="margin-top: 0;">
+              <span class="badge badge-kind-{{ result.failure_kind }}">{{ result.failure_kind }}</span>
+            </div>
           </div>
-          {% if view.top_failures %}
-          <div class="issue-grid">
-            {% for result in view.top_failures %}
-            <article class="card issue-card">
-              <div class="issue-head">
-                <div>
-                  <div class="eyebrow">{{ result.workflow_type }}</div>
-                  <h3>{{ result.path }}</h3>
-                </div>
-                <div class="chip-row" style="margin-top: 0;">
-                  <span class="badge badge-kind-{{ result.failure_kind }}">{{ result.failure_kind }}</span>
-                  <span class="badge badge-risk-{{ result.risk_level }}">{{ result.risk_level }}</span>
-                </div>
-              </div>
-              <div class="info-grid">
-                <div class="info-box"><span class="info-label">History ID</span><span class="info-value">{{ result.history_id }}</span></div>
-                <div class="info-box"><span class="info-label">Status</span><span class="info-value"><span class="badge badge-status-{{ result.status }}">{{ result.status }}</span></span></div>
-                <div class="info-box"><span class="info-label">Duration</span><span class="info-value">{{ result.duration }}</span></div>
-              </div>
-              <p><strong>Summary:</strong> {{ result.summary }}</p>
-              <p><strong>Likely cause:</strong> {{ result.likely_cause or "-" }}</p>
-              <p><strong>Remediation hint:</strong> {{ result.remediation_hint or "-" }}</p>
-              {% if result.raw_details %}
-              <details>
-                <summary>Raw details</summary>
-                <pre>{{ result.raw_details }}</pre>
-              </details>
-              {% endif %}
-            </article>
-            {% endfor %}
-          </div>
-          {% else %}
-          <p class="empty">No failing histories.</p>
+          <p><strong>History:</strong> {{ result.path }}</p>
+          <p><strong>Summary:</strong> {{ result.summary }}</p>
+          <p><strong>Likely cause:</strong> {{ result.likely_cause or "-" }}</p>
+          <p><strong>Suggested fix:</strong> {{ result.remediation_hint or "-" }}</p>
+          {% if result.raw_details %}
+          <details>
+            <summary>Show raw details</summary>
+            <pre>{{ result.raw_details }}</pre>
+          </details>
           {% endif %}
-        </section>
+        </article>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="empty">No failing histories.</p>
+      {% endif %}
+    </section>
 
-        <section id="all-results" class="section">
-          <div class="section-heading">
-            <h2>All Results</h2>
-            <p>Search and filter the full replay set without leaving the static report artifact.</p>
-          </div>
-          <div class="panel table-card">
+    <section id="all-results" class="section">
+      <div class="section-heading">
+        <h2>All Results</h2>
+        <p>The results table is the primary evidence surface. Secondary detail stays inside the row expansion instead of taking table width.</p>
+      </div>
+      <div class="panel table-card">
             <div class="filters">
               <input id="searchInput" type="search" placeholder="Search history ID, file, workflow, summary, or hint">
               <select id="workflowFilter">
@@ -1051,17 +1280,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <div class="results-meta" aria-live="polite"><span id="visibleCount">{{ view.results|length }}</span> of {{ view.results|length }} visible</div>
             <div id="resultsEmpty" class="empty-state" hidden>No results match the current filters.</div>
             <div class="table-wrap">
-              <table id="resultsTable">
+              <table id="resultsTable" class="results-table">
                 <thead>
                   <tr>
-                    <th>History ID</th>
-                    <th>File</th>
-                    <th>Workflow type</th>
                     <th>Status</th>
-                    <th>Compatibility</th>
+                    <th>Workflow</th>
+                    <th>History</th>
                     <th>Failure kind</th>
-                    <th>Duration</th>
                     <th>Summary</th>
+                    <th>Duration</th>
                     <th>Details</th>
                   </tr>
                 </thead>
@@ -1073,17 +1300,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                     data-kind="{{ result.failure_kind or '' }}"
                     data-search="{{ (result.history_id ~ ' ' ~ result.path ~ ' ' ~ result.workflow_type ~ ' ' ~ result.summary ~ ' ' ~ (result.likely_cause or '') ~ ' ' ~ (result.remediation_hint or ''))|lower }}"
                   >
-                    <td data-label="History ID"><strong>{{ result.history_id }}</strong></td>
-                    <td data-label="File">{{ result.path }}</td>
-                    <td data-label="Workflow type">{{ result.workflow_type }}</td>
                     <td data-label="Status"><span class="badge badge-status-{{ result.status }}">{{ result.status }}</span></td>
-                    <td data-label="Compatibility"><span class="badge badge-compatibility-{{ result.compatibility }}">{{ result.compatibility }}</span></td>
+                    <td data-label="Workflow"><strong>{{ result.workflow_type }}</strong></td>
+                    <td data-label="History">{{ result.history_id }}</td>
                     <td data-label="Failure kind"><span class="badge {{ 'badge-kind-' ~ result.failure_kind if result.failure_kind else 'badge-neutral' }}">{{ result.failure_kind or "none" }}</span></td>
-                    <td data-label="Duration">{{ result.duration }}</td>
                     <td data-label="Summary">{{ result.summary }}</td>
+                    <td data-label="Duration">{{ result.duration }}</td>
                     <td data-label="Details">
                       <details>
                         <summary>Inspect</summary>
+                        <p><strong>File:</strong> {{ result.path }}</p>
+                        <p style="margin-top: 10px;"><strong>Compatibility:</strong> {{ result.compatibility }}</p>
                         <p><strong>Likely cause:</strong> {{ result.likely_cause or "-" }}</p>
                         <p style="margin-top: 10px;"><strong>Remediation hint:</strong> {{ result.remediation_hint or "-" }}</p>
                         {% if result.raw_details %}
@@ -1099,24 +1326,25 @@ HTML_TEMPLATE = """<!DOCTYPE html>
               </table>
             </div>
           </div>
-        </section>
+    </section>
 
-        <section id="environment-and-config-snapshot" class="section">
+    <details id="advanced-details" class="advanced-panel section">
+      <summary>Advanced details</summary>
+      <div class="advanced-body">
+        <section>
           <div class="section-heading">
             <h2>Environment And Config Snapshot</h2>
             <p>This is the run configuration context used to produce the current replay decision.</p>
           </div>
-          <div class="panel">
-            <div class="snapshot-grid">
-              <div class="snapshot-item"><span class="snapshot-label">Selection strategy</span><span class="snapshot-value">{{ view.selection_strategy }}</span></div>
-              <div class="snapshot-item"><span class="snapshot-label">Max histories</span><span class="snapshot-value">{{ view.max_histories }}</span></div>
-              <div class="snapshot-item"><span class="snapshot-label">Redact payloads in reports</span><span class="snapshot-value">{{ view.redact_payloads_in_reports }}</span></div>
-              <div class="snapshot-item"><span class="snapshot-label">Adapter mode</span><span class="snapshot-value">{{ view.adapter_mode }}</span></div>
-            </div>
+          <div class="snapshot-grid">
+            <div class="snapshot-item"><span class="snapshot-label">Selection strategy</span><span class="snapshot-value">{{ view.selection_strategy }}</span></div>
+            <div class="snapshot-item"><span class="snapshot-label">Max histories</span><span class="snapshot-value">{{ view.max_histories }}</span></div>
+            <div class="snapshot-item"><span class="snapshot-label">Redact payloads in reports</span><span class="snapshot-value">{{ view.redact_payloads_in_reports }}</span></div>
+            <div class="snapshot-item"><span class="snapshot-label">Adapter mode</span><span class="snapshot-value">{{ view.adapter_mode }}</span></div>
           </div>
         </section>
 
-        <section id="artifacts" class="section">
+        <section>
           <div class="section-heading">
             <h2>Artifacts</h2>
             <p>These are the deterministic outputs Replay Gate recorded for this verification run.</p>
@@ -1130,12 +1358,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
               </article>
               {% endfor %}
             {% else %}
-            <div class="panel"><p class="empty">No artifact paths recorded.</p></div>
+            <div class="plain-panel"><p class="empty">No artifact paths recorded.</p></div>
             {% endif %}
           </div>
         </section>
       </div>
-    </div>
+    </details>
   </main>
   <script>
     const searchInput = document.getElementById("searchInput");
@@ -1203,34 +1431,50 @@ def render_html_report(report: VerificationReport) -> str:
         {item.failure_kind for item in view.results if item.failure_kind is not None}
     )
     dominant_failure = view.failure_breakdown[0] if view.failure_breakdown else None
+    top_failure = view.top_failures[0] if view.top_failures else None
     highlight_workflow = next(
         (row for row in workflow_rows if row.failed or row.errored),
         workflow_rows[0] if workflow_rows else None,
     )
-    workflows_at_risk = sum(1 for row in workflow_rows if row.failed or row.errored)
-    pass_rate = round((view.passed / view.histories_checked) * 100) if view.histories_checked else 0
+    top_likely_cause = (
+        top_failure.likely_cause
+        if top_failure and top_failure.likely_cause
+        else (
+            "No likely cause classified."
+            if view.failed
+            else "No replay failures classified."
+        )
+    )
+    top_remediation = (
+        top_failure.remediation_hint
+        if top_failure and top_failure.remediation_hint
+        else (
+            "No remediation hint classified."
+            if view.failed
+            else "No remediation required."
+        )
+    )
+    diagnosis_heading = "Why this failed" if view.policy_decision == "fail" else "Why this passed"
     section_links = (
+        {"id": "why-this-failed", "label": diagnosis_heading},
         {"id": "verification-summary", "label": "Verification Summary"},
-        {"id": "policy-decision", "label": "Policy Decision"},
-        {"id": "failure-breakdown", "label": "Failure Breakdown"},
-        {"id": "workflow-type-breakdown", "label": "Workflow Type Breakdown"},
+        {"id": "workflow-type-breakdown", "label": "Affected Workflow Types"},
         {"id": "top-failing-histories", "label": "Top Failing Histories"},
         {"id": "all-results", "label": "All Results"},
-        {"id": "environment-and-config-snapshot", "label": "Environment And Config Snapshot"},
-        {"id": "artifacts", "label": "Artifacts"},
+        {"id": "advanced-details", "label": "Advanced Details"},
     )
     return template.render(
         view=view,
+        diagnosis_heading=diagnosis_heading,
         dominant_failure=dominant_failure,
         failure_filters=failure_filters,
         failure_max=failure_max,
         highlight_workflow=highlight_workflow,
-        pass_rate=pass_rate,
         section_links=section_links,
-        violation_count=len(view.violations),
+        top_likely_cause=top_likely_cause,
+        top_remediation=top_remediation,
         workflow_filters=workflow_filters,
         workflow_rows=workflow_rows,
-        workflows_at_risk=workflows_at_risk,
     )
 
 

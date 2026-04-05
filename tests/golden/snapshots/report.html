@@ -11,6 +11,7 @@
       --paper-line: rgba(45, 54, 69, 0.08);
       --panel: #fffdf7;
       --ink: #1f2530;
+      --ink-soft: #475160;
       --muted: #5c6370;
       --line: #d8ccb5;
       --line-strong: #b9aa8d;
@@ -726,21 +727,297 @@
       background: rgba(255,255,255,0.6);
     }
 
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 6;
+      display: grid;
+      grid-template-columns: minmax(220px, 1.2fr) minmax(0, 2fr);
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+      padding: 12px 16px;
+      border-bottom: 3px solid #0b1421;
+      background: rgba(19, 29, 43, 0.96);
+      color: #f3f1e9;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(10px);
+    }
+
+    .topbar-title {
+      display: grid;
+      gap: 4px;
+    }
+
+    .topbar-brand {
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(233, 238, 244, 0.72);
+    }
+
+    .topbar-project {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff9f1;
+    }
+
+    .topbar-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .topbar-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.08);
+      color: #f3f1e9;
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .topbar-pill strong {
+      font-size: 0.95rem;
+      color: #fff9f1;
+    }
+
+    .topbar-pill.failed strong,
+    .topbar-pill.failed { color: #ffd5cc; }
+    .topbar-pill.passed strong,
+    .topbar-pill.passed { color: #d7eee7; }
+    .topbar-pill.error strong,
+    .topbar-pill.error { color: #f2d8dd; }
+
+    .report-shell {
+      display: grid;
+      gap: 18px;
+    }
+
+    .report-head {
+      display: grid;
+      gap: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line-strong);
+    }
+
+    .report-kicker {
+      color: var(--navy-soft);
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .report-head h1 {
+      margin-top: 6px;
+      font-size: 2rem;
+      max-width: none;
+    }
+
+    .report-meta {
+      margin-top: 6px;
+      color: var(--ink-soft);
+      font-size: 0.95rem;
+    }
+
+    .report-utility {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+
+    .utility-item {
+      padding: 12px 14px;
+      border-left: 3px solid var(--navy-soft);
+      background: rgba(255,255,255,0.62);
+    }
+
+    .subnav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(22,38,59,0.12);
+    }
+
+    .subnav a {
+      padding: 8px 10px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(22,38,59,0.12);
+      color: var(--navy-soft);
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .section-block {
+      display: grid;
+      gap: 12px;
+    }
+
+    .section-block .section-heading {
+      margin-bottom: 0;
+    }
+
+    .two-up {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .plain-panel {
+      padding: 18px;
+      border: 1px solid rgba(22,38,59,0.12);
+      background: rgba(255,255,255,0.72);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .plain-panel h3 {
+      margin-bottom: 8px;
+      font-size: 1.15rem;
+    }
+
+    .plain-list {
+      display: grid;
+      gap: 10px;
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .plain-list li {
+      padding: 10px 12px;
+      border-left: 3px solid var(--fail);
+      background: rgba(255,255,255,0.68);
+      color: var(--ink);
+    }
+
+    .diagnosis-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .diagnosis-item {
+      display: grid;
+      gap: 5px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(22,38,59,0.1);
+    }
+
+    .diagnosis-item:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .diagnosis-item strong {
+      color: var(--ink);
+    }
+
+    .report-shell table {
+      min-width: 0;
+      table-layout: fixed;
+    }
+
+    .report-shell td,
+    .report-shell th {
+      word-break: break-word;
+    }
+
+    .compact-table th:nth-child(1),
+    .compact-table td:nth-child(1) { width: 16%; }
+    .compact-table th:nth-child(2),
+    .compact-table td:nth-child(2) { width: 10%; }
+    .compact-table th:nth-child(3),
+    .compact-table td:nth-child(3) { width: 10%; }
+    .compact-table th:nth-child(4),
+    .compact-table td:nth-child(4) { width: 18%; }
+    .compact-table th:nth-child(5),
+    .compact-table td:nth-child(5) { width: 12%; }
+
+    .results-table th:nth-child(1),
+    .results-table td:nth-child(1) { width: 10%; }
+    .results-table th:nth-child(2),
+    .results-table td:nth-child(2) { width: 14%; }
+    .results-table th:nth-child(3),
+    .results-table td:nth-child(3) { width: 16%; }
+    .results-table th:nth-child(4),
+    .results-table td:nth-child(4) { width: 14%; }
+    .results-table th:nth-child(5),
+    .results-table td:nth-child(5) { width: 24%; }
+    .results-table th:nth-child(6),
+    .results-table td:nth-child(6) { width: 10%; }
+    .results-table th:nth-child(7),
+    .results-table td:nth-child(7) { width: 12%; }
+
+    .advanced-panel {
+      border: 2px solid var(--line);
+      background: rgba(255,255,255,0.72);
+      box-shadow: var(--shadow);
+    }
+
+    .advanced-panel summary {
+      padding: 16px 18px;
+      cursor: pointer;
+      color: var(--navy);
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .advanced-panel[open] summary {
+      border-bottom: 1px solid rgba(22,38,59,0.12);
+    }
+
+    .advanced-body {
+      display: grid;
+      gap: 12px;
+      padding: 18px;
+    }
+
     @media (max-width: 1120px) {
+      .topbar {
+        grid-template-columns: 1fr;
+      }
+      .topbar-strip {
+        justify-content: flex-start;
+      }
       .page-grid { grid-template-columns: 1fr; }
-      .rail { position: static; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+      .rail { display: none; }
       .hero { grid-template-columns: 1fr; }
       .summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .two-up,
+      .spotlight-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 760px) {
       main { padding-inline: 14px; }
-      .rail { grid-template-columns: 1fr; }
+      .topbar-pill {
+        width: 100%;
+        justify-content: space-between;
+      }
       .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .filters { grid-template-columns: 1fr; }
+      .subnav { display: grid; }
       .breakdown-row { grid-template-columns: 1fr; }
       .hero-stats,
       .rail-stats { grid-template-columns: 1fr 1fr; }
+      .report-head h1 {
+        font-size: 1.6rem;
+      }
 
       table,
       thead,
@@ -784,255 +1061,201 @@
   </style>
 </head>
 <body>
-  <main>
-    <div class="page-grid">
-      <aside class="rail">
-        <section class="rail-card">
-          <div class="eyebrow">Verdict</div>
-          <div class="rail-status failed">FAILED</div>
+  <div class="topbar">
+    <div class="topbar-title">
+      <span class="topbar-brand">Replay Gate</span>
+      <span class="topbar-project">payments-workflows</span>
+    </div>
+    <div class="topbar-strip">
+      <span class="topbar-pill failed"><strong>FAILED</strong></span>
+      <span class="topbar-pill"><strong>1</strong> checked</span>
+      <span class="topbar-pill"><strong>1</strong> failed</span>
+      <span class="topbar-pill"><strong>nondeterminism</strong> dominant failure</span>
+      <span class="topbar-pill"><strong>fail</strong> policy</span>
+    </div>
+  </div>
+
+  <main class="report-shell">
+    <header class="report-head">
+      <div>
+        <div class="report-kicker">Replay verification report</div>
+        <h1>payments-workflows</h1>
+        <p class="report-meta">Project payments-workflows · Engine temporal · Generated 2026-01-01T12:00:00+00:00 · Git SHA abc123</p>
+      </div>
+      <div class="report-utility">
+        <div class="utility-item"><div class="eyebrow">Config</div><div class="meta-value">examples/temporal/replaygate.yaml</div></div>
+        <div class="utility-item"><div class="eyebrow">Selection strategy</div><div class="meta-value">all</div></div>
+        <div class="utility-item"><div class="eyebrow">Adapter mode</div><div class="meta-value">local_module</div></div>
+        <div class="utility-item"><div class="eyebrow">Tool version</div><div class="meta-value">0.1.0</div></div>
+      </div>
+    </header>
+
+    <nav class="subnav" aria-label="Report sections">
+      
+      <a href="#why-this-failed">Why this failed</a>
+      
+      <a href="#verification-summary">Verification Summary</a>
+      
+      <a href="#workflow-type-breakdown">Affected Workflow Types</a>
+      
+      <a href="#top-failing-histories">Top Failing Histories</a>
+      
+      <a href="#all-results">All Results</a>
+      
+      <a href="#advanced-details">Advanced Details</a>
+      
+    </nav>
+
+    <section id="why-this-failed" class="section section-block">
+      <div class="section-heading">
+        <h2>Why this failed</h2>
+        <p>The first screen is optimized for the deployment decision: what failed, what is affected, and what to do next.</p>
+      </div>
+      <div class="two-up">
+        <article class="plain-panel">
+          <div class="eyebrow">Policy decision</div>
+          <h3>FAIL</h3>
           <p>This change fails replay safety policy.</p>
-          <div class="rail-stats">
-            <div class="rail-stat"><strong>1</strong><span>Histories</span></div>
-            <div class="rail-stat"><strong>1</strong><span>Failed</span></div>
-            <div class="rail-stat"><strong>0</strong><span>Errors</span></div>
-            <div class="rail-stat"><strong>1</strong><span>At risk</span></div>
-          </div>
-        </section>
-
-        <nav class="rail-card" aria-label="Report sections">
-          <div class="eyebrow">Jump To</div>
-          <ul class="nav-list">
-            
-            <li><a href="#verification-summary">Verification Summary</a></li>
-            
-            <li><a href="#policy-decision">Policy Decision</a></li>
-            
-            <li><a href="#failure-breakdown">Failure Breakdown</a></li>
-            
-            <li><a href="#workflow-type-breakdown">Workflow Type Breakdown</a></li>
-            
-            <li><a href="#top-failing-histories">Top Failing Histories</a></li>
-            
-            <li><a href="#all-results">All Results</a></li>
-            
-            <li><a href="#environment-and-config-snapshot">Environment And Config Snapshot</a></li>
-            
-            <li><a href="#artifacts">Artifacts</a></li>
-            
-          </ul>
-        </nav>
-
-        <section class="rail-card">
-          <div class="eyebrow">Artifacts</div>
           
-          <ul class="rule-list">
+          <ul class="plain-list">
             
-            <li><strong>JSON</strong><br><span class="artifact-path">artifacts/report.json</span></li>
-            
-            <li><strong>Markdown</strong><br><span class="artifact-path">artifacts/report.md</span></li>
-            
-            <li><strong>HTML</strong><br><span class="artifact-path">artifacts/report.html</span></li>
+            <li>max_failures=0 -&gt; violated (1 observed)</li>
             
           </ul>
           
-        </section>
-      </aside>
-
-      <div class="content">
-        <header class="hero">
-          <section class="panel">
-            <div class="eyebrow">Replay Gate Report</div>
-            <h1>payments-workflows</h1>
-            <p class="hero-copy">Deployment-safety verification for durable workflow replay compatibility before rollout.</p>
-            <div class="chip-row">
-              <span class="chip">Engine temporal</span>
-              <span class="chip">Generated 2026-01-01T12:00:00+00:00</span>
-              <span class="chip">Tool 0.1.0</span>
-              <span class="chip">Git SHA abc123</span>
-            </div>
-            <div class="meta-grid">
-              <div class="meta-card"><div class="eyebrow">Config</div><div class="meta-value">examples/temporal/replaygate.yaml</div></div>
-              <div class="meta-card"><div class="eyebrow">Selection Strategy</div><div class="meta-value">all</div></div>
-              <div class="meta-card"><div class="eyebrow">Adapter Mode</div><div class="meta-value">local_module</div></div>
-            </div>
-          </section>
-
-          <section id="verdict" class="panel verdict-card">
-            <div class="eyebrow">Verdict</div>
-            <div class="verdict-header">
-              <div>
-                <div class="status-text">FAILED</div>
-                <p>This change fails replay safety policy.</p>
-              </div>
-              <span class="badge badge-fail">FAIL</span>
-            </div>
-            <div class="hero-stats">
-              <div class="hero-stat"><div class="hero-stat-value">1</div><span class="hero-stat-label">Histories checked</span></div>
-              <div class="hero-stat"><div class="hero-stat-value">0%</div><span class="hero-stat-label">Pass rate</span></div>
-              <div class="hero-stat"><div class="hero-stat-value">1</div><span class="hero-stat-label">Workflow types at risk</span></div>
-              <div class="hero-stat"><div class="hero-stat-value">nondeterminism</div><span class="hero-stat-label">Dominant failure</span></div>
-            </div>
-          </section>
-        </header>
-
-        <section id="verification-summary" class="section">
-          <div class="section-heading">
-            <h2>Verification Summary</h2>
-            <p>Counts stay aligned with the CLI, GitHub markdown summary, and machine-readable JSON report.</p>
-          </div>
-          <div class="summary-grid">
-            <article class="card summary-card neutral"><div class="metric">1</div><div class="metric-label">Total histories</div></article>
-            <article class="card summary-card pass"><div class="metric">0</div><div class="metric-label">Passed</div></article>
-            <article class="card summary-card fail"><div class="metric">1</div><div class="metric-label">Failed</div></article>
-            <article class="card summary-card warn"><div class="metric">0</div><div class="metric-label">Skipped</div></article>
-            <article class="card summary-card error"><div class="metric">0</div><div class="metric-label">Errors</div></article>
-            <article class="card summary-card neutral"><div class="metric">1</div><div class="metric-label">Workflow types covered</div></article>
-          </div>
-        </section>
-
-        <section id="policy-decision" class="section">
-          <div class="section-heading">
-            <h2>Policy Decision</h2>
-            <p>Replay Gate normalizes adapter results, then applies the configured policy thresholds here.</p>
-          </div>
-          <div class="spotlight-grid">
-            <article class="spotlight">
-              <div class="eyebrow">Decision</div>
-              <div class="spotlight-value">FAIL</div>
-              <p>1 violated rule</p>
-            </article>
-            <article class="spotlight">
-              <div class="eyebrow">Most Affected Workflow</div>
-              <div class="spotlight-value">PaymentWorkflow</div>
+        </article>
+        <article class="plain-panel">
+          <div class="eyebrow">Diagnosis</div>
+          <div class="diagnosis-grid">
+            <div class="diagnosis-item">
+              <span class="eyebrow">Most affected workflow</span>
+              <strong>PaymentWorkflow</strong>
               <p>Risk critical · 1 failed of 1 checked</p>
-            </article>
-            <article class="spotlight">
-              <div class="eyebrow">Dominant Failure</div>
-              <div class="spotlight-value">nondeterminism</div>
-              <p>1 matching history</p>
-            </article>
-          </div>
-          <div class="panel">
-            <p>This change fails replay safety policy.</p>
-            
-            <ul class="rule-list" style="margin-top: 14px;">
-              
-              <li>max_failures=0 -&gt; violated (1 observed)</li>
-              
-            </ul>
-            
-          </div>
-        </section>
-
-        <section id="failure-breakdown" class="section">
-          <div class="section-heading">
-            <h2>Failure Breakdown</h2>
-            <p>Failure kinds are grouped after normalization so the categories stay consistent across every UX surface.</p>
-          </div>
-          <div class="panel">
-            
-            <div class="breakdown-list">
-              
-              <div class="breakdown-row">
-                <strong>nondeterminism</strong>
-                <div class="bar"><span style="width: 100.0%"></span></div>
-                <div class="count">1 · 100%</div>
-              </div>
-              
             </div>
-            
-          </div>
-        </section>
-
-        <section id="workflow-type-breakdown" class="section">
-          <div class="section-heading">
-            <h2>Workflow Type Breakdown</h2>
-            <p>Use this view to see whether risk is isolated to one workflow type or spread across the candidate module.</p>
-          </div>
-          <div class="panel table-card">
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Workflow type</th>
-                    <th>Checked</th>
-                    <th>Passed</th>
-                    <th>Failed</th>
-                    <th>Skipped</th>
-                    <th>Errors</th>
-                    <th>Dominant failure</th>
-                    <th>Risk</th>
-                    <th>Notes</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  
-                  <tr>
-                    <td data-label="Workflow type"><strong>PaymentWorkflow</strong></td>
-                    <td data-label="Checked">1</td>
-                    <td data-label="Passed">0</td>
-                    <td data-label="Failed">1</td>
-                    <td data-label="Skipped">0</td>
-                    <td data-label="Errors">0</td>
-                    <td data-label="Dominant failure"><span class="badge badge-kind-nondeterminism">nondeterminism</span></td>
-                    <td data-label="Risk"><span class="badge badge-risk-critical">critical</span></td>
-                    <td data-label="Notes">nondeterminism detected</td>
-                  </tr>
-                  
-                </tbody>
-              </table>
+            <div class="diagnosis-item">
+              <span class="eyebrow">Primary cause</span>
+              <strong>nondeterminism</strong>
+              <p>workflow command sequence changed</p>
+            </div>
+            <div class="diagnosis-item">
+              <span class="eyebrow">Recommended next action</span>
+              <strong>add Temporal versioning or patch gates</strong>
             </div>
           </div>
-        </section>
-
-        <section id="top-failing-histories" class="section">
-          <div class="section-heading">
-            <h2>Top Failing Histories</h2>
-            <p>These are ranked by risk first so the most important replay incompatibilities land near the top.</p>
+        </article>
+      </div>
+      <article class="plain-panel">
+        <div class="section-heading" style="margin-bottom: 12px;">
+          <h3>Failure breakdown</h3>
+          <p>Failure kinds are normalized before rendering so the categories stay consistent across every surface.</p>
+        </div>
+        
+        <div class="breakdown-list">
+          
+          <div class="breakdown-row">
+            <strong>nondeterminism</strong>
+            <div class="bar"><span style="width: 100.0%"></span></div>
+            <div class="count">1 · 100%</div>
           </div>
           
-          <div class="issue-grid">
-            
-            <article class="card issue-card">
-              <div class="issue-head">
-                <div>
-                  <div class="eyebrow">PaymentWorkflow</div>
-                  <h3>histories/payment.json</h3>
-                </div>
-                <div class="chip-row" style="margin-top: 0;">
-                  <span class="badge badge-kind-nondeterminism">nondeterminism</span>
-                  <span class="badge badge-risk-critical">critical</span>
-                </div>
-              </div>
-              <div class="info-grid">
-                <div class="info-box"><span class="info-label">History ID</span><span class="info-value">payment-1</span></div>
-                <div class="info-box"><span class="info-label">Status</span><span class="info-value"><span class="badge badge-status-failed">failed</span></span></div>
-                <div class="info-box"><span class="info-label">Duration</span><span class="info-value">-</span></div>
-              </div>
-              <p><strong>Summary:</strong> command mismatch during replay</p>
-              <p><strong>Likely cause:</strong> workflow command sequence changed</p>
-              <p><strong>Remediation hint:</strong> add Temporal versioning or patch gates</p>
+        </div>
+        
+      </article>
+    </section>
+
+    <section id="verification-summary" class="section">
+      <div class="section-heading">
+        <h2>Verification Summary</h2>
+        <p>Counts stay aligned with the CLI, GitHub markdown summary, and machine-readable JSON report.</p>
+      </div>
+      <div class="summary-grid">
+        <article class="card summary-card neutral"><div class="metric">1</div><div class="metric-label">Total histories</div></article>
+        <article class="card summary-card pass"><div class="metric">0</div><div class="metric-label">Passed</div></article>
+        <article class="card summary-card fail"><div class="metric">1</div><div class="metric-label">Failed</div></article>
+        <article class="card summary-card warn"><div class="metric">0</div><div class="metric-label">Skipped</div></article>
+        <article class="card summary-card error"><div class="metric">0</div><div class="metric-label">Errors</div></article>
+        <article class="card summary-card neutral"><div class="metric">1</div><div class="metric-label">Workflow types covered</div></article>
+      </div>
+    </section>
+
+    <section id="workflow-type-breakdown" class="section">
+      <div class="section-heading">
+        <h2>Affected Workflow Types</h2>
+        <p>Use this table to see whether replay risk is isolated to one workflow or spread across the candidate module.</p>
+      </div>
+      <div class="panel table-card">
+        <div class="table-wrap">
+          <table class="compact-table">
+            <thead>
+              <tr>
+                <th>Workflow</th>
+                <th>Checked</th>
+                <th>Failed</th>
+                <th>Dominant failure</th>
+                <th>Risk</th>
+                <th>Note</th>
+              </tr>
+            </thead>
+            <tbody>
               
-              <details>
-                <summary>Raw details</summary>
-                <pre>{
+              <tr>
+                <td data-label="Workflow"><strong>PaymentWorkflow</strong></td>
+                <td data-label="Checked">1</td>
+                <td data-label="Failed">1</td>
+                <td data-label="Dominant failure"><span class="badge badge-kind-nondeterminism">nondeterminism</span></td>
+                <td data-label="Risk"><span class="badge badge-risk-critical">critical</span></td>
+                <td data-label="Note">nondeterminism detected</td>
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="top-failing-histories" class="section">
+      <div class="section-heading">
+        <h2>Top Failing Histories</h2>
+        <p>These are the clearest examples of what blocked replay safety for this run.</p>
+      </div>
+      
+      <div class="issue-grid">
+        
+        <article class="card issue-card">
+          <div class="issue-head">
+            <div>
+              <div class="eyebrow">PaymentWorkflow</div>
+              <h3>payment-1</h3>
+            </div>
+            <div class="chip-row" style="margin-top: 0;">
+              <span class="badge badge-kind-nondeterminism">nondeterminism</span>
+            </div>
+          </div>
+          <p><strong>History:</strong> histories/payment.json</p>
+          <p><strong>Summary:</strong> command mismatch during replay</p>
+          <p><strong>Likely cause:</strong> workflow command sequence changed</p>
+          <p><strong>Suggested fix:</strong> add Temporal versioning or patch gates</p>
+          
+          <details>
+            <summary>Show raw details</summary>
+            <pre>{
   &#34;details&#34;: {},
   &#34;exception_type&#34;: null
 }</pre>
-              </details>
-              
-            </article>
-            
-          </div>
+          </details>
           
-        </section>
+        </article>
+        
+      </div>
+      
+    </section>
 
-        <section id="all-results" class="section">
-          <div class="section-heading">
-            <h2>All Results</h2>
-            <p>Search and filter the full replay set without leaving the static report artifact.</p>
-          </div>
-          <div class="panel table-card">
+    <section id="all-results" class="section">
+      <div class="section-heading">
+        <h2>All Results</h2>
+        <p>The results table is the primary evidence surface. Secondary detail stays inside the row expansion instead of taking table width.</p>
+      </div>
+      <div class="panel table-card">
             <div class="filters">
               <input id="searchInput" type="search" placeholder="Search history ID, file, workflow, summary, or hint">
               <select id="workflowFilter">
@@ -1052,17 +1275,15 @@
             <div class="results-meta" aria-live="polite"><span id="visibleCount">1</span> of 1 visible</div>
             <div id="resultsEmpty" class="empty-state" hidden>No results match the current filters.</div>
             <div class="table-wrap">
-              <table id="resultsTable">
+              <table id="resultsTable" class="results-table">
                 <thead>
                   <tr>
-                    <th>History ID</th>
-                    <th>File</th>
-                    <th>Workflow type</th>
                     <th>Status</th>
-                    <th>Compatibility</th>
+                    <th>Workflow</th>
+                    <th>History</th>
                     <th>Failure kind</th>
-                    <th>Duration</th>
                     <th>Summary</th>
+                    <th>Duration</th>
                     <th>Details</th>
                   </tr>
                 </thead>
@@ -1074,17 +1295,17 @@
                     data-kind="nondeterminism"
                     data-search="payment-1 histories/payment.json paymentworkflow command mismatch during replay workflow command sequence changed add temporal versioning or patch gates"
                   >
-                    <td data-label="History ID"><strong>payment-1</strong></td>
-                    <td data-label="File">histories/payment.json</td>
-                    <td data-label="Workflow type">PaymentWorkflow</td>
                     <td data-label="Status"><span class="badge badge-status-failed">failed</span></td>
-                    <td data-label="Compatibility"><span class="badge badge-compatibility-incompatible">incompatible</span></td>
+                    <td data-label="Workflow"><strong>PaymentWorkflow</strong></td>
+                    <td data-label="History">payment-1</td>
                     <td data-label="Failure kind"><span class="badge badge-kind-nondeterminism">nondeterminism</span></td>
-                    <td data-label="Duration">-</td>
                     <td data-label="Summary">command mismatch during replay</td>
+                    <td data-label="Duration">-</td>
                     <td data-label="Details">
                       <details>
                         <summary>Inspect</summary>
+                        <p><strong>File:</strong> histories/payment.json</p>
+                        <p style="margin-top: 10px;"><strong>Compatibility:</strong> incompatible</p>
                         <p><strong>Likely cause:</strong> workflow command sequence changed</p>
                         <p style="margin-top: 10px;"><strong>Remediation hint:</strong> add Temporal versioning or patch gates</p>
                         
@@ -1101,24 +1322,25 @@
               </table>
             </div>
           </div>
-        </section>
+    </section>
 
-        <section id="environment-and-config-snapshot" class="section">
+    <details id="advanced-details" class="advanced-panel section">
+      <summary>Advanced details</summary>
+      <div class="advanced-body">
+        <section>
           <div class="section-heading">
             <h2>Environment And Config Snapshot</h2>
             <p>This is the run configuration context used to produce the current replay decision.</p>
           </div>
-          <div class="panel">
-            <div class="snapshot-grid">
-              <div class="snapshot-item"><span class="snapshot-label">Selection strategy</span><span class="snapshot-value">all</span></div>
-              <div class="snapshot-item"><span class="snapshot-label">Max histories</span><span class="snapshot-value">50</span></div>
-              <div class="snapshot-item"><span class="snapshot-label">Redact payloads in reports</span><span class="snapshot-value">True</span></div>
-              <div class="snapshot-item"><span class="snapshot-label">Adapter mode</span><span class="snapshot-value">local_module</span></div>
-            </div>
+          <div class="snapshot-grid">
+            <div class="snapshot-item"><span class="snapshot-label">Selection strategy</span><span class="snapshot-value">all</span></div>
+            <div class="snapshot-item"><span class="snapshot-label">Max histories</span><span class="snapshot-value">50</span></div>
+            <div class="snapshot-item"><span class="snapshot-label">Redact payloads in reports</span><span class="snapshot-value">True</span></div>
+            <div class="snapshot-item"><span class="snapshot-label">Adapter mode</span><span class="snapshot-value">local_module</span></div>
           </div>
         </section>
 
-        <section id="artifacts" class="section">
+        <section>
           <div class="section-heading">
             <h2>Artifacts</h2>
             <p>These are the deterministic outputs Replay Gate recorded for this verification run.</p>
@@ -1145,7 +1367,7 @@
           </div>
         </section>
       </div>
-    </div>
+    </details>
   </main>
   <script>
     const searchInput = document.getElementById("searchInput");
