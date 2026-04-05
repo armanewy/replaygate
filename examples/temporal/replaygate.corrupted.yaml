@@ -1,0 +1,29 @@
+project:
+  name: replay-gate-examples
+  engine: temporal
+
+verification:
+  history_sources:
+    - type: filesystem
+      path: ./histories
+      glob: "corrupted_history.json"
+  selection:
+    max_histories: 50
+    strategy: all
+  outputs:
+    json: ./artifacts/report.corrupted.json
+    markdown: ./artifacts/report.corrupted.md
+
+policy:
+  fail_on:
+    - corrupted_history
+  max_unknown: 0
+  max_failures: 0
+
+privacy:
+  redact_payloads_in_reports: true
+
+temporal:
+  import_mode: local_module
+  workflows_module: examples.temporal.workflows
+  payload_codec: none

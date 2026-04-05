@@ -20,4 +20,8 @@ The first trustworthy product surface is a local CLI and CI gate. This keeps the
 
 ## D-004: Honest Temporal integration
 
-The Temporal adapter will use a real integration where practical. If live-cluster fetching or full SDK replay is not feasible inside the MVP, the repository will still implement a real adapter boundary, real history parsing, real classification, and deterministic fixture-backed verification. Any mocked or simulated behavior will be documented explicitly.
+The Temporal adapter uses the real Temporal Python SDK replay path against checked-in history fixtures. Live-cluster fetching is intentionally deferred so the MVP stays local-first and deterministic. The current implementation is real for module loading, history parsing, replay execution, and failure classification. Only cluster-history acquisition is deferred.
+
+## D-005: Checked-in sanitized histories over live cluster coupling
+
+The MVP ships with sanitized Temporal history envelopes generated from a local Temporal test environment. This keeps tests deterministic and allows the example command to run without external infrastructure while still exercising a real replay engine.

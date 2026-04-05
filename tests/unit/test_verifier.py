@@ -21,14 +21,18 @@ from replaygate.verifier import verify_config
 class FakeAdapter(WorkflowAdapter):
     engine = WorkflowEngine.TEMPORAL
 
-    def load_candidate(self, config: ReplayGateConfig) -> ReplayCandidate:
+    def load_candidate(self, config: ReplayGateConfig, config_path: Path) -> ReplayCandidate:
         return ReplayCandidate(
             engine=self.engine,
             source="fake.module",
             registered_workflow_types=["PaymentWorkflow"],
         )
 
-    def discover_histories(self, config: ReplayGateConfig) -> list[WorkflowHistoryArtifact]:
+    def discover_histories(
+        self,
+        config: ReplayGateConfig,
+        config_path: Path,
+    ) -> list[WorkflowHistoryArtifact]:
         return [
             WorkflowHistoryArtifact(
                 engine=self.engine,
@@ -49,6 +53,7 @@ class FakeAdapter(WorkflowAdapter):
         artifact: WorkflowHistoryArtifact,
         candidate: ReplayCandidate,
         config: ReplayGateConfig,
+        config_path: Path,
     ) -> ReplayResult:
         return ReplayResult(
             artifact=artifact,
@@ -102,7 +107,11 @@ temporal:
 
 def test_verify_config_builds_missing_history_result(tmp_path: Path) -> None:
     class EmptyAdapter(FakeAdapter):
-        def discover_histories(self, config: ReplayGateConfig) -> list[WorkflowHistoryArtifact]:
+        def discover_histories(
+            self,
+            config: ReplayGateConfig,
+            config_path: Path,
+        ) -> list[WorkflowHistoryArtifact]:
             return []
 
     config_path = tmp_path / "replaygate.yaml"

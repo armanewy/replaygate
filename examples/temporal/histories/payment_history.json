@@ -1,0 +1,157 @@
+{
+  "history": {
+    "events": [
+      {
+        "eventId": "1",
+        "eventTime": "2026-04-05T14:35:58.915Z",
+        "eventType": "EVENT_TYPE_WORKFLOW_EXECUTION_STARTED",
+        "workflowExecutionStartedEventAttributes": {
+          "attempt": 1,
+          "firstExecutionRunId": "d937925a-22cc-4d5b-ad95-d73312ad1f16",
+          "firstWorkflowTaskBackoff": "0s",
+          "identity": "32896@Arman-Desktop",
+          "input": {
+            "payloads": [
+              {
+                "data": "MTIwMA==",
+                "metadata": {
+                  "encoding": "anNvbi9wbGFpbg=="
+                }
+              }
+            ]
+          },
+          "originalExecutionRunId": "d937925a-22cc-4d5b-ad95-d73312ad1f16",
+          "priority": {},
+          "taskQueue": {
+            "name": "replay-gate-fixtures"
+          },
+          "workflowExecutionTimeout": "315360000s",
+          "workflowRunTimeout": "315360000s",
+          "workflowTaskTimeout": "10s",
+          "workflowType": {
+            "name": "PaymentWorkflow"
+          }
+        }
+      },
+      {
+        "eventId": "2",
+        "eventTime": "2026-04-05T14:35:58.915Z",
+        "eventType": "EVENT_TYPE_WORKFLOW_TASK_SCHEDULED",
+        "workflowTaskScheduledEventAttributes": {
+          "attempt": 1,
+          "startToCloseTimeout": "10s",
+          "taskQueue": {
+            "name": "replay-gate-fixtures"
+          }
+        }
+      },
+      {
+        "eventId": "3",
+        "eventTime": "2026-04-05T14:35:58.915Z",
+        "eventType": "EVENT_TYPE_WORKFLOW_TASK_STARTED",
+        "workflowTaskStartedEventAttributes": {
+          "identity": "32896@Arman-Desktop",
+          "scheduledEventId": "2"
+        }
+      },
+      {
+        "eventId": "4",
+        "eventTime": "2026-04-05T14:35:58.921Z",
+        "eventType": "EVENT_TYPE_WORKFLOW_TASK_COMPLETED",
+        "workflowTaskCompletedEventAttributes": {
+          "binaryChecksum": "28cce4e0fd535e77f38bcae823a8c2ea",
+          "identity": "32896@Arman-Desktop",
+          "meteringMetadata": {},
+          "scheduledEventId": "2",
+          "sdkMetadata": {
+            "coreUsedFlags": [
+              2,
+              3,
+              1
+            ],
+            "sdkName": "temporal-python",
+            "sdkVersion": "1.24.0"
+          }
+        }
+      },
+      {
+        "eventId": "5",
+        "eventTime": "2026-04-05T14:35:58.921Z",
+        "eventType": "EVENT_TYPE_TIMER_STARTED",
+        "timerStartedEventAttributes": {
+          "startToFireTimeout": "1s",
+          "timerId": "1",
+          "workflowTaskCompletedEventId": "3"
+        }
+      },
+      {
+        "eventId": "6",
+        "eventTime": "2026-04-05T14:35:59.921Z",
+        "eventType": "EVENT_TYPE_TIMER_FIRED",
+        "timerFiredEventAttributes": {
+          "startedEventId": "5",
+          "timerId": "1"
+        }
+      },
+      {
+        "eventId": "7",
+        "eventTime": "2026-04-05T14:35:59.921Z",
+        "eventType": "EVENT_TYPE_WORKFLOW_TASK_SCHEDULED",
+        "workflowTaskScheduledEventAttributes": {
+          "attempt": 1,
+          "startToCloseTimeout": "10s",
+          "taskQueue": {
+            "name": "replay-gate-fixtures"
+          }
+        }
+      },
+      {
+        "eventId": "8",
+        "eventTime": "2026-04-05T14:35:59.921Z",
+        "eventType": "EVENT_TYPE_WORKFLOW_TASK_STARTED",
+        "workflowTaskStartedEventAttributes": {
+          "identity": "32896@Arman-Desktop",
+          "scheduledEventId": "7"
+        }
+      },
+      {
+        "eventId": "9",
+        "eventTime": "2026-04-05T14:35:59.922Z",
+        "eventType": "EVENT_TYPE_WORKFLOW_TASK_COMPLETED",
+        "workflowTaskCompletedEventAttributes": {
+          "binaryChecksum": "28cce4e0fd535e77f38bcae823a8c2ea",
+          "identity": "32896@Arman-Desktop",
+          "meteringMetadata": {},
+          "scheduledEventId": "7",
+          "sdkMetadata": {}
+        }
+      },
+      {
+        "eventId": "10",
+        "eventTime": "2026-04-05T14:35:59.922Z",
+        "eventType": "EVENT_TYPE_WORKFLOW_EXECUTION_COMPLETED",
+        "workflowExecutionCompletedEventAttributes": {
+          "result": {
+            "payloads": [
+              {
+                "data": "ImFwcHJvdmVkOjEyMDAi",
+                "metadata": {
+                  "encoding": "anNvbi9wbGFpbg=="
+                }
+              }
+            ]
+          },
+          "workflowTaskCompletedEventId": "8"
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "engine": "temporal",
+    "generated_by": "examples/temporal/generate_histories.py",
+    "sanitized": true
+  },
+  "run_id": "d937925a-22cc-4d5b-ad95-d73312ad1f16",
+  "workflow_id": "payment-demo",
+  "workflow_type": "PaymentWorkflow"
+}

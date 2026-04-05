@@ -33,10 +33,10 @@ Ship a working MVP for pre-deploy workflow replay verification with a real Tempo
 
 ### Milestone 3: Temporal adapter
 
-- [ ] Filesystem history discovery
-- [ ] Temporal replay path or best honest vertical slice
-- [ ] Temporal error classification
-- [ ] Integration tests
+- [x] Filesystem history discovery
+- [x] Temporal replay path or best honest vertical slice
+- [x] Temporal error classification
+- [x] Integration tests
 
 ### Milestone 4: CI packaging
 

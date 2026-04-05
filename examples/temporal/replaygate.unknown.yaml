@@ -1,0 +1,29 @@
+project:
+  name: replay-gate-examples
+  engine: temporal
+
+verification:
+  history_sources:
+    - type: filesystem
+      path: ./histories
+      glob: "legacy_history.json"
+  selection:
+    max_histories: 50
+    strategy: all
+  outputs:
+    json: ./artifacts/report.unknown.json
+    markdown: ./artifacts/report.unknown.md
+
+policy:
+  fail_on:
+    - unknown_workflow_type
+  max_unknown: 0
+  max_failures: 0
+
+privacy:
+  redact_payloads_in_reports: true
+
+temporal:
+  import_mode: local_module
+  workflows_module: examples.temporal.workflows
+  payload_codec: none

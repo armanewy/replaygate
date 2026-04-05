@@ -18,7 +18,6 @@ from replaygate.models import (
     ReplayResult,
     ReplayRun,
     ReplayStatus,
-    RiskLevel,
     VerificationReport,
     VerificationSummary,
     WorkflowHistoryArtifact,
@@ -27,6 +26,7 @@ from replaygate.models import (
 from replaygate.policy import evaluate_policy
 from replaygate.reporting.json_report import write_json_report
 from replaygate.reporting.markdown_report import write_markdown_report
+from replaygate.risk import risk_for_result
 
 
 @dataclass
@@ -61,24 +61,6 @@ def select_histories(
             or artifact.workflow.workflow_type in allowed
         ]
     return selected[: config.verification.selection.max_histories]
-
-
-def risk_for_result(status: ReplayStatus, failure_kind: FailureKind | None) -> RiskLevel:
-    if status is ReplayStatus.PASSED:
-        return RiskLevel.LOW
-    if failure_kind is FailureKind.NONDETERMINISM:
-        return RiskLevel.CRITICAL
-    if failure_kind in {
-        FailureKind.UNKNOWN_WORKFLOW_TYPE,
-        FailureKind.ADAPTER_ERROR,
-        FailureKind.ENVIRONMENT_ERROR,
-        FailureKind.PAYLOAD_DECODE_ERROR,
-        FailureKind.MISSING_HISTORY,
-    }:
-        return RiskLevel.HIGH
-    if failure_kind is FailureKind.CORRUPTED_HISTORY:
-        return RiskLevel.MEDIUM
-    return RiskLevel.HIGH
 
 
 def build_missing_history_result(config: ReplayGateConfig) -> ReplayResult:
@@ -154,6 +136,60 @@ def write_outputs(
     return written
 
 
+def build_environment_error_report(
+    config: ReplayGateConfig,
+    config_path: Path,
+    exc: Exception,
+) -> VerificationExecution:
+    failure_kind = FailureKind.ENVIRONMENT_ERROR
+    result = ReplayResult(
+        artifact=WorkflowHistoryArtifact(
+            engine=config.project.engine,
+            path=str(config_path),
+            source_kind="config",
+            checksum_sha256="",
+            size_bytes=0,
+            workflow=WorkflowIdentifier(workflow_id="verification-environment"),
+        ),
+        status=ReplayStatus.ERROR,
+        compatibility_status=CompatibilityStatus.UNKNOWN,
+        risk_level=risk_for_result(ReplayStatus.ERROR, failure_kind),
+        failure=ReplayFailure(
+            kind=failure_kind,
+            summary="Verification could not initialize the adapter environment.",
+            likely_cause=(
+                "The candidate workflow module or history discovery step failed "
+                "before replay execution began."
+            ),
+            remediation_hint=(
+                "Fix the adapter configuration or candidate module import error "
+                "and rerun verification."
+            ),
+            exception_type=type(exc).__name__,
+            details={"message": str(exc)},
+        ),
+    )
+    report = VerificationReport(
+        project_name=config.project.name,
+        engine=config.project.engine,
+        run=ReplayRun.now(),
+        candidate=ReplayCandidate(
+            engine=config.project.engine,
+            source="unavailable",
+            registered_workflow_types=[],
+        ),
+        summary=build_summary([result]),
+        policy=evaluate_policy(config.policy, [result]),
+        results=[result],
+    )
+    written_outputs = write_outputs(report, config, config_path)
+    return VerificationExecution(
+        report=report,
+        exit_code=1,
+        written_outputs=written_outputs,
+    )
+
+
 async def verify_config(
     config_path: Path,
     *,
@@ -162,8 +198,11 @@ async def verify_config(
     started_at = datetime.now(tz=UTC)
     config = load_config(config_path)
     resolved_adapter = adapter or get_adapter(config.project.engine)
-    candidate: ReplayCandidate = resolved_adapter.load_candidate(config)
-    artifacts = resolved_adapter.discover_histories(config)
+    try:
+        candidate: ReplayCandidate = resolved_adapter.load_candidate(config, config_path)
+        artifacts = resolved_adapter.discover_histories(config, config_path)
+    except Exception as exc:
+        return build_environment_error_report(config, config_path, exc)
     selected = select_histories(config, artifacts)
 
     if not selected:
@@ -172,7 +211,12 @@ async def verify_config(
         results: list[ReplayResult] = []
         for artifact in selected:
             try:
-                result = await resolved_adapter.replay_artifact(artifact, candidate, config)
+                result = await resolved_adapter.replay_artifact(
+                    artifact,
+                    candidate,
+                    config,
+                    config_path,
+                )
             except Exception as exc:
                 result = build_adapter_error_result(artifact, exc)
             results.append(result)
