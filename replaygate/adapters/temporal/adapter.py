@@ -69,7 +69,8 @@ class TemporalAdapter(WorkflowAdapter):
         if not self._workflows:
             raise ValueError("Temporal candidate workflows have not been loaded")
 
-        record = self._history_records.get(artifact.path)
+        record_key = artifact.metadata.get("record_key", artifact.path)
+        record = self._history_records.get(str(record_key))
         if record is None:
             raise FileNotFoundError(f"History artifact {artifact.path} was not discovered")
 

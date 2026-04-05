@@ -50,13 +50,15 @@ def discover_histories(
 def load_history_record(path: Path, base_dir: Path) -> TemporalHistoryRecord:
     raw_bytes = path.read_bytes()
     checksum = hashlib.sha256(raw_bytes).hexdigest()
-    key = to_display_path(path, base_dir)
+    key = to_record_key(path)
+    display_path = to_display_path(path, base_dir)
 
     try:
         parsed = json.loads(raw_bytes.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         return TemporalHistoryRecord(
             key=key,
+            display_path=display_path,
             resolved_path=path,
             checksum_sha256=checksum,
             size_bytes=len(raw_bytes),
@@ -82,6 +84,7 @@ def load_history_record(path: Path, base_dir: Path) -> TemporalHistoryRecord:
 
     record = TemporalHistoryRecord(
         key=key,
+        display_path=display_path,
         resolved_path=path,
         checksum_sha256=checksum,
         size_bytes=len(raw_bytes),
@@ -93,9 +96,6 @@ def load_history_record(path: Path, base_dir: Path) -> TemporalHistoryRecord:
         loader_error_kind=loader_error_kind,
         loader_error_message=loader_error_message,
     )
-    artifact = build_artifact(record)
-    artifact.checksum_sha256 = checksum
-    artifact.size_bytes = len(raw_bytes)
     return record
 
 
@@ -110,12 +110,15 @@ def build_artifact(record: TemporalHistoryRecord) -> WorkflowHistoryArtifact:
 
     return WorkflowHistoryArtifact(
         engine=WorkflowEngine.TEMPORAL,
-        path=record.key,
+        path=record.display_path,
         source_kind="filesystem",
         checksum_sha256=record.checksum_sha256,
         size_bytes=record.size_bytes,
         workflow=workflow,
-        metadata={"event_count": record.event_count},
+        metadata={
+            "event_count": record.event_count,
+            "record_key": record.key,
+        },
     )
 
 
@@ -172,4 +175,8 @@ def to_display_path(path: Path, base_dir: Path) -> str:
     try:
         return path.relative_to(base_dir).as_posix()
     except ValueError:
-        return path.name
+        return path.resolve().as_posix()
+
+
+def to_record_key(path: Path) -> str:
+    return path.resolve().as_posix()

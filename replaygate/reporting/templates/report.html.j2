@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Replay Gate Report - {{ view.project_name }}</title>
+  <style>{{ stylesheet | safe }}</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-title">
+      <span class="topbar-brand">Replay Gate</span>
+      <span class="topbar-project">{{ view.project_name }}</span>
+    </div>
+    <div class="topbar-strip">
+      <span class="topbar-pill {{ view.verdict|lower }}"><strong>{{ view.verdict }}</strong></span>
+      <span class="topbar-pill"><strong>{{ view.histories_checked }}</strong> checked</span>
+      <span class="topbar-pill"><strong>{{ view.failed }}</strong> failed</span>
+      <span class="topbar-pill"><strong>{{ dominant_failure.label if dominant_failure else "none" }}</strong> dominant failure</span>
+      <span class="topbar-pill"><strong>{{ view.policy_decision }}</strong> policy</span>
+    </div>
+  </div>
+
+  <main class="report-shell">
+    <header class="report-head">
+      <div class="report-copy">
+        <div class="report-kicker">Replay verification report</div>
+        <h1>{{ view.project_name }}</h1>
+        <p class="report-meta">Engine {{ view.engine }} · Generated {{ view.generated_at }}{% if view.git_sha %} · Git SHA {{ view.git_sha }}{% endif %}</p>
+      </div>
+      <div class="report-utility">
+        <div class="utility-item">
+          <div class="eyebrow">Config</div>
+          <div class="meta-value">{{ view.config_path }}</div>
+        </div>
+        <div class="utility-item">
+          <div class="eyebrow">Selection strategy</div>
+          <div class="meta-value">{{ view.selection_strategy }}</div>
+        </div>
+        <div class="utility-item">
+          <div class="eyebrow">Adapter mode</div>
+          <div class="meta-value">{{ view.adapter_mode }}</div>
+        </div>
+        <div class="utility-item">
+          <div class="eyebrow">Tool version</div>
+          <div class="meta-value">{{ view.tool_version }}</div>
+        </div>
+      </div>
+    </header>
+
+    <nav class="subnav" aria-label="Report sections">
+      {% for link in section_links %}
+      <a href="#{{ link.id }}">{{ link.label }}</a>
+      {% endfor %}
+    </nav>
+
+    <section id="why-this-failed" class="section section-block">
+      <div class="section-heading">
+        <h2>{{ diagnosis_heading }}</h2>
+        <p>The first screen is optimized for the deployment decision: what failed, what is affected, and what to do next.</p>
+      </div>
+      <div class="split-panels">
+        <article class="panel">
+          <div class="eyebrow">Policy decision</div>
+          <h3>{{ view.policy_decision|upper }}</h3>
+          <p>{{ view.policy_summary }}</p>
+          {% if view.violations %}
+          <ul class="plain-list">
+            {% for violation in view.violations %}
+            <li>{{ violation }}</li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p class="empty">No policy violations.</p>
+          {% endif %}
+        </article>
+        <article class="panel">
+          <div class="eyebrow">Diagnosis</div>
+          <div class="diagnosis-grid">
+            <div class="diagnosis-item">
+              <span class="eyebrow">Most affected workflow</span>
+              <strong>{{ highlight_workflow.workflow_type if highlight_workflow else "none" }}</strong>
+              <p>{% if highlight_workflow %}Risk {{ highlight_workflow.risk_level.value }} · {{ highlight_workflow.failed }} failed of {{ highlight_workflow.checked }} checked{% else %}No workflow breakdown available.{% endif %}</p>
+            </div>
+            <div class="diagnosis-item">
+              <span class="eyebrow">Primary cause</span>
+              <strong>{{ dominant_failure.label if dominant_failure else "none" }}</strong>
+              <p>{{ top_likely_cause }}</p>
+            </div>
+            <div class="diagnosis-item">
+              <span class="eyebrow">Recommended next action</span>
+              <strong>{{ top_remediation }}</strong>
+            </div>
+          </div>
+        </article>
+      </div>
+      <article class="panel">
+        <div class="section-heading compact">
+          <h3>Failure breakdown</h3>
+          <p>Failure kinds are normalized before rendering so the categories stay consistent across every surface.</p>
+        </div>
+        {% if view.failure_breakdown %}
+        <div class="breakdown-list">
+          {% for item in view.failure_breakdown %}
+          <div class="breakdown-row">
+            <strong>{{ item.label }}</strong>
+            <div class="bar"><span style="width: {{ (item.count / failure_max * 100) if failure_max else 0 }}%"></span></div>
+            <div class="count">{{ item.count }} · {{ ((item.count / view.histories_checked) * 100) | round(0) | int }}%</div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="empty">No failures recorded.</p>
+        {% endif %}
+      </article>
+    </section>
+
+    <section id="verification-summary" class="section">
+      <div class="section-heading">
+        <h2>Verification Summary</h2>
+        <p>Counts stay aligned with the CLI, GitHub markdown summary, and machine-readable JSON report.</p>
+      </div>
+      <div class="summary-grid">
+        <article class="summary-card"><div class="metric">{{ view.histories_checked }}</div><div class="metric-label">Total histories</div></article>
+        <article class="summary-card accent-pass"><div class="metric">{{ view.passed }}</div><div class="metric-label">Passed</div></article>
+        <article class="summary-card accent-fail"><div class="metric">{{ view.failed }}</div><div class="metric-label">Failed</div></article>
+        <article class="summary-card accent-warn"><div class="metric">{{ view.skipped }}</div><div class="metric-label">Skipped</div></article>
+        <article class="summary-card accent-error"><div class="metric">{{ view.errored }}</div><div class="metric-label">Errors</div></article>
+        <article class="summary-card"><div class="metric">{{ view.workflow_types }}</div><div class="metric-label">Workflow types covered</div></article>
+      </div>
+    </section>
+
+    <section id="workflow-type-breakdown" class="section">
+      <div class="section-heading">
+        <h2>Affected Workflow Types</h2>
+        <p>Use this table to see whether replay risk is isolated to one workflow or spread across the candidate module.</p>
+      </div>
+      <div class="table-card">
+        <div class="table-wrap">
+          <table class="compact-table">
+            <thead>
+              <tr>
+                <th>Workflow</th>
+                <th>Checked</th>
+                <th>Failed</th>
+                <th>Dominant failure</th>
+                <th>Risk</th>
+                <th>Note</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in workflow_rows %}
+              <tr>
+                <td data-label="Workflow"><strong>{{ row.workflow_type }}</strong></td>
+                <td data-label="Checked">{{ row.checked }}</td>
+                <td data-label="Failed">{{ row.failed }}</td>
+                <td data-label="Dominant failure"><span class="badge {{ 'badge-kind-' ~ row.dominant_failure_kind.value if row.dominant_failure_kind else 'badge-neutral' }}">{{ row.dominant_failure_kind.value if row.dominant_failure_kind else "none" }}</span></td>
+                <td data-label="Risk"><span class="badge badge-risk-{{ row.risk_level.value }}">{{ row.risk_level.value }}</span></td>
+                <td data-label="Note">{{ row.notes or "" }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="top-failing-histories" class="section">
+      <div class="section-heading">
+        <h2>Top Failing Histories</h2>
+        <p>These are the clearest examples of what blocked replay safety for this run.</p>
+      </div>
+      {% if view.top_failures %}
+      <div class="issue-grid">
+        {% for result in view.top_failures %}
+        <article class="issue-card">
+          <div class="issue-head">
+            <div>
+              <div class="eyebrow">{{ result.workflow_type }}</div>
+              <h3>{{ result.history_id }}</h3>
+            </div>
+            <span class="badge badge-kind-{{ result.failure_kind }}">{{ result.failure_kind }}</span>
+          </div>
+          <p><strong>History:</strong> {{ result.path }}</p>
+          <p><strong>Summary:</strong> {{ result.summary }}</p>
+          <p><strong>Likely cause:</strong> {{ result.likely_cause or "-" }}</p>
+          <p><strong>Suggested fix:</strong> {{ result.remediation_hint or "-" }}</p>
+          {% if result.raw_details %}
+          <details>
+            <summary>Show raw details</summary>
+            <pre>{{ result.raw_details }}</pre>
+          </details>
+          {% endif %}
+        </article>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="empty">No failing histories.</p>
+      {% endif %}
+    </section>
+
+    <section id="all-results" class="section">
+      <div class="section-heading">
+        <h2>All Results</h2>
+        <p>The results table is the primary evidence surface. Secondary detail stays inside row expansion instead of taking table width.</p>
+      </div>
+      <div class="table-card">
+        <div class="filters">
+          <input id="searchInput" type="search" placeholder="Search history ID, file, workflow, summary, or hint">
+          <select id="workflowFilter">
+            <option value="">All workflow types</option>
+            {% for option in workflow_filters %}
+            <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+          </select>
+          <select id="failureFilter">
+            <option value="">All failure kinds</option>
+            {% for option in failure_filters %}
+            <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+          </select>
+          <label class="checkbox"><input id="failedOnly" type="checkbox"> Failed only</label>
+        </div>
+        <div class="results-meta" aria-live="polite"><span id="visibleCount">{{ view.results|length }}</span> of {{ view.results|length }} visible</div>
+        <div id="resultsEmpty" class="empty-state" hidden>No results match the current filters.</div>
+        <div class="table-wrap">
+          <table id="resultsTable" class="results-table">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Workflow</th>
+                <th>History</th>
+                <th>Failure kind</th>
+                <th>Summary</th>
+                <th>Duration</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for result in view.results %}
+              <tr
+                data-status="{{ result.status }}"
+                data-workflow="{{ result.workflow_type }}"
+                data-kind="{{ result.failure_kind or '' }}"
+                data-search="{{ (result.history_id ~ ' ' ~ result.path ~ ' ' ~ result.workflow_type ~ ' ' ~ result.summary ~ ' ' ~ (result.likely_cause or '') ~ ' ' ~ (result.remediation_hint or ''))|lower }}"
+              >
+                <td data-label="Status"><span class="badge badge-status-{{ result.status }}">{{ result.status }}</span></td>
+                <td data-label="Workflow"><strong>{{ result.workflow_type }}</strong></td>
+                <td data-label="History">{{ result.history_id }}</td>
+                <td data-label="Failure kind"><span class="badge {{ 'badge-kind-' ~ result.failure_kind if result.failure_kind else 'badge-neutral' }}">{{ result.failure_kind or "none" }}</span></td>
+                <td data-label="Summary">{{ result.summary }}</td>
+                <td data-label="Duration">{{ result.duration }}</td>
+                <td data-label="Details">
+                  <details>
+                    <summary>Inspect</summary>
+                    <p><strong>File:</strong> {{ result.path }}</p>
+                    <p><strong>Compatibility:</strong> {{ result.compatibility }}</p>
+                    <p><strong>Likely cause:</strong> {{ result.likely_cause or "-" }}</p>
+                    <p><strong>Remediation hint:</strong> {{ result.remediation_hint or "-" }}</p>
+                    {% if result.raw_details %}
+                    <pre>{{ result.raw_details }}</pre>
+                    {% else %}
+                    <p class="empty">No raw details.</p>
+                    {% endif %}
+                  </details>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <details id="advanced-details" class="advanced-panel section">
+      <summary>Advanced details</summary>
+      <div class="advanced-body">
+        <section>
+          <div class="section-heading">
+            <h2>Environment And Config Snapshot</h2>
+            <p>This is the run configuration context used to produce the current replay decision.</p>
+          </div>
+          <div class="snapshot-grid">
+            <div class="snapshot-item"><span class="snapshot-label">Selection strategy</span><span class="snapshot-value">{{ view.selection_strategy }}</span></div>
+            <div class="snapshot-item"><span class="snapshot-label">Max histories</span><span class="snapshot-value">{{ view.max_histories }}</span></div>
+            <div class="snapshot-item"><span class="snapshot-label">Redact payloads in reports</span><span class="snapshot-value">{{ view.redact_payloads_in_reports }}</span></div>
+            <div class="snapshot-item"><span class="snapshot-label">Adapter mode</span><span class="snapshot-value">{{ view.adapter_mode }}</span></div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-heading">
+            <h2>Artifacts</h2>
+            <p>These are the deterministic outputs Replay Gate recorded for this verification run.</p>
+          </div>
+          <div class="artifact-grid">
+            {% if view.artifacts %}
+              {% for artifact in view.artifacts %}
+              <article class="artifact-card">
+                <div class="eyebrow">{{ artifact.label }}</div>
+                <div class="artifact-path">{{ artifact.path }}</div>
+              </article>
+              {% endfor %}
+            {% else %}
+            <div class="panel"><p class="empty">No artifact paths recorded.</p></div>
+            {% endif %}
+          </div>
+        </section>
+      </div>
+    </details>
+  </main>
+  <script>{{ script | safe }}</script>
+</body>
+</html>

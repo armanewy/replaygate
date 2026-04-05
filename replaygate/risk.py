@@ -5,6 +5,16 @@ from __future__ import annotations
 from replaygate.models import CompatibilityStatus, FailureKind, ReplayStatus, RiskLevel
 
 
+def risk_rank(level: RiskLevel | str) -> int:
+    value = level.value if isinstance(level, RiskLevel) else level
+    return {
+        RiskLevel.LOW.value: 0,
+        RiskLevel.MEDIUM.value: 1,
+        RiskLevel.HIGH.value: 2,
+        RiskLevel.CRITICAL.value: 3,
+    }[value]
+
+
 def risk_for_result(status: ReplayStatus, failure_kind: FailureKind | None) -> RiskLevel:
     if status is ReplayStatus.PASSED:
         return RiskLevel.LOW

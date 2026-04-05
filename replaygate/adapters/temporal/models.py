@@ -12,6 +12,7 @@ from replaygate.models import FailureKind
 @dataclass(slots=True)
 class TemporalHistoryRecord:
     key: str
+    display_path: str
     resolved_path: Path
     checksum_sha256: str
     size_bytes: int

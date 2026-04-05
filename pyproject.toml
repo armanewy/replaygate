@@ -38,6 +38,9 @@ replay-gate = "replaygate.cli:app"
 [tool.setuptools.packages.find]
 include = ["replaygate*"]
 
+[tool.setuptools.package-data]
+"replaygate.reporting" = ["templates/*.j2", "static/*.css", "static/*.js"]
+
 [tool.ruff]
 line-length = 100
 target-version = "py311"

@@ -7,7 +7,9 @@ from replaygate.adapters.base import WorkflowAdapter
 from replaygate.config import ReplayGateConfig
 from replaygate.models import (
     CompatibilityStatus,
+    FailureKind,
     ReplayCandidate,
+    ReplayFailure,
     ReplayResult,
     ReplayStatus,
     RiskLevel,
@@ -15,7 +17,7 @@ from replaygate.models import (
     WorkflowHistoryArtifact,
     WorkflowIdentifier,
 )
-from replaygate.verifier import verify_config
+from replaygate.verifier import build_failure_breakdown, verify_config
 
 
 class FakeAdapter(WorkflowAdapter):
@@ -149,3 +151,59 @@ temporal:
     assert execution.exit_code == 1
     assert execution.report.results[0].failure is not None
     assert execution.report.results[0].failure.kind.value == "missing_history"
+
+
+def test_build_failure_breakdown_orders_by_count_then_kind() -> None:
+    artifact = WorkflowHistoryArtifact(
+        engine=WorkflowEngine.TEMPORAL,
+        path="histories/payment.json",
+        source_kind="filesystem",
+        checksum_sha256="abc",
+        size_bytes=10,
+        workflow=WorkflowIdentifier(workflow_id="payment-1"),
+    )
+    results = [
+        ReplayResult(
+            artifact=artifact,
+            status=ReplayStatus.FAILED,
+            compatibility_status=CompatibilityStatus.INCOMPATIBLE,
+            risk_level=RiskLevel.CRITICAL,
+            failure=ReplayFailure(
+                kind=FailureKind.NONDETERMINISM,
+                summary="mismatch",
+                likely_cause="changed workflow",
+                remediation_hint="add patching",
+            ),
+        ),
+        ReplayResult(
+            artifact=artifact,
+            status=ReplayStatus.ERROR,
+            compatibility_status=CompatibilityStatus.UNKNOWN,
+            risk_level=RiskLevel.HIGH,
+            failure=ReplayFailure(
+                kind=FailureKind.ADAPTER_ERROR,
+                summary="adapter error",
+                likely_cause="adapter blew up",
+                remediation_hint="inspect adapter",
+            ),
+        ),
+        ReplayResult(
+            artifact=artifact,
+            status=ReplayStatus.FAILED,
+            compatibility_status=CompatibilityStatus.INCOMPATIBLE,
+            risk_level=RiskLevel.CRITICAL,
+            failure=ReplayFailure(
+                kind=FailureKind.NONDETERMINISM,
+                summary="mismatch again",
+                likely_cause="changed workflow",
+                remediation_hint="add patching",
+            ),
+        ),
+    ]
+
+    breakdown = build_failure_breakdown(results)
+
+    assert list(breakdown) == [
+        FailureKind.NONDETERMINISM,
+        FailureKind.ADAPTER_ERROR,
+    ]

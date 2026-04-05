@@ -34,7 +34,7 @@ from replaygate.policy import evaluate_policy
 from replaygate.reporting.html_report import write_html_report
 from replaygate.reporting.json_report import write_json_report
 from replaygate.reporting.markdown_report import write_markdown_report
-from replaygate.risk import risk_for_result
+from replaygate.risk import risk_for_result, risk_rank
 from replaygate.runtime_metadata import detect_git_sha
 
 
@@ -71,11 +71,8 @@ def workflow_name_for_result(result: ReplayResult) -> str:
 
 def build_failure_breakdown(results: list[ReplayResult]) -> dict[FailureKind, int]:
     counts = Counter(result.failure.kind for result in results if result.failure is not None)
-    return {kind: counts[kind] for kind in sorted(counts, key=lambda item: item.value)}
-
-
-def risk_rank(level: str) -> int:
-    return {"low": 0, "medium": 1, "high": 2, "critical": 3}[level]
+    ordered_kinds = sorted(counts, key=lambda kind: (-counts[kind], kind.value))
+    return {kind: counts[kind] for kind in ordered_kinds}
 
 
 def build_workflow_breakdown(results: list[ReplayResult]) -> list[WorkflowTypeBreakdown]:

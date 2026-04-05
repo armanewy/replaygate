@@ -11,10 +11,10 @@ from replaygate.models import (
     PolicyDecisionValue,
     ReplayFailure,
     ReplayResult,
-    RiskLevel,
     VerificationReport,
     WorkflowTypeBreakdown,
 )
+from replaygate.risk import risk_rank
 
 
 @dataclass(frozen=True)
@@ -137,12 +137,11 @@ def policy_summary_for_report(report: VerificationReport) -> str:
 
 
 def build_failure_breakdown_items(report: VerificationReport) -> list[BreakdownItem]:
-    items = [
+    return [
         BreakdownItem(label=kind.value, count=count)
         for kind, count in report.failure_breakdown.items()
         if count > 0
     ]
-    return sorted(items, key=lambda item: (-item.count, item.label))
 
 
 def build_artifact_items(artifacts: ArtifactManifest) -> list[ArtifactItem]:
@@ -203,13 +202,3 @@ def format_duration(duration_ms: float | None) -> str:
     if duration_ms is None:
         return "-"
     return f"{duration_ms:.1f} ms"
-
-
-def risk_rank(risk_level: str) -> int:
-    order = {
-        RiskLevel.LOW.value: 0,
-        RiskLevel.MEDIUM.value: 1,
-        RiskLevel.HIGH.value: 2,
-        RiskLevel.CRITICAL.value: 3,
-    }
-    return order[risk_level]
