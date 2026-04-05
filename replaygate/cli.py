@@ -42,6 +42,11 @@ def verify(config: Path = CONFIG_OPTION) -> None:
         console.print(f"Replay Gate: ERROR\n{exc}", style="bold red")
         raise typer.Exit(code=2) from exc
     print_console_summary(execution.report, console)
+    if execution.written_outputs:
+        console.print("")
+        console.print("Artifacts:")
+        for name, path in execution.written_outputs.items():
+            console.print(f"- {name}: {path}")
     raise typer.Exit(code=execution.exit_code)
 
 

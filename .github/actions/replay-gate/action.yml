@@ -1,0 +1,22 @@
+name: Replay Gate
+description: Verify Temporal workflow histories against candidate code before rollout
+inputs:
+  config:
+    description: Path to the Replay Gate config file
+    required: true
+  python-version:
+    description: Python version to use
+    required: false
+    default: "3.12"
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+    - shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install -e ".[temporal]"
+    - shell: bash
+      run: python -m replaygate.cli verify --config "${{ inputs.config }}"

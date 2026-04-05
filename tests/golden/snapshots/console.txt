@@ -1,0 +1,16 @@
+Replay Gate: FAILED
+Project: payments-workflows
+Engine: temporal
+Histories checked: 1
+Passed: 0
+Failed: 1
+Errors: 0
+Skipped: 0
+
+Top failures:
+1. PaymentWorkflow / histories/payment.json
+   kind: nondeterminism
+   summary: command mismatch during replay
+
+Policy:
+- max_failures=0 -> violated (1 observed)

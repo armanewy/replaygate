@@ -1,0 +1,62 @@
+{
+  "candidate": {
+    "engine": "temporal",
+    "metadata": {},
+    "registered_workflow_types": [
+      "PaymentWorkflow"
+    ],
+    "source": "examples.temporal.workflows"
+  },
+  "engine": "temporal",
+  "policy": {
+    "observed_failures": 1,
+    "observed_unknown": 0,
+    "passed": false,
+    "violated_rules": [
+      "max_failures=0 -> violated (1 observed)"
+    ]
+  },
+  "project_name": "payments-workflows",
+  "results": [
+    {
+      "artifact": {
+        "checksum_sha256": "abc",
+        "engine": "temporal",
+        "metadata": {},
+        "path": "histories/payment.json",
+        "size_bytes": 42,
+        "source_kind": "filesystem",
+        "workflow": {
+          "run_id": "run-1",
+          "workflow_id": "payment-1",
+          "workflow_type": "PaymentWorkflow"
+        }
+      },
+      "compatibility_status": "incompatible",
+      "failure": {
+        "details": {},
+        "kind": "nondeterminism",
+        "likely_cause": "workflow command sequence changed",
+        "remediation_hint": "add Temporal versioning or patch gates",
+        "summary": "command mismatch during replay"
+      },
+      "risk_level": "critical",
+      "status": "failed",
+      "workflow_type": "PaymentWorkflow"
+    }
+  ],
+  "run": {
+    "config_path": "examples/temporal/replaygate.yaml",
+    "duration_ms": 0,
+    "finished_at": "2026-01-01T00:00:00Z",
+    "started_at": "2026-01-01T00:00:00Z"
+  },
+  "schema_version": "1",
+  "summary": {
+    "errors": 0,
+    "failed": 1,
+    "passed": 0,
+    "skipped": 0,
+    "total_histories": 1
+  }
+}

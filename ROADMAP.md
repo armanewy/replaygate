@@ -40,10 +40,10 @@ Ship a working MVP for pre-deploy workflow replay verification with a real Tempo
 
 ### Milestone 4: CI packaging
 
-- [ ] GitHub Action wrapper
-- [ ] Example workflow
-- [ ] Console UX polish
-- [ ] Golden tests
+- [x] GitHub Action wrapper
+- [x] Example workflow
+- [x] Console UX polish
+- [x] Golden tests
 
 ### Milestone 5: MVP hardening
 
