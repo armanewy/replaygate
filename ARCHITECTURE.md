@@ -13,7 +13,7 @@ High-level flow:
 5. Replay each selected history.
 6. Normalize failures into Replay Gate domain models.
 7. Apply policy thresholds.
-8. Emit console, JSON, and Markdown outputs.
+8. Emit console, JSON, Markdown, and HTML outputs.
 9. Exit non-zero on policy failure.
 
 ## Core Abstractions
@@ -28,6 +28,8 @@ High-level flow:
 - `ReplayFailure`
 - `PolicyDecision`
 - `VerificationReport`
+- `WorkflowTypeBreakdown`
+- `ArtifactManifest`
 
 These models are engine-agnostic and intentionally stable so adapters can evolve without changing report consumers.
 
@@ -95,7 +97,7 @@ The orchestration lives in `replaygate/verifier.py`.
 4. Discover artifacts from configured sources.
 5. Filter by workflow type and selection cap.
 6. Replay each artifact.
-7. Build a typed report summary.
+7. Build a typed report summary, failure breakdown, workflow breakdown, and artifact manifest.
 8. Evaluate policy.
 9. Write requested outputs.
 
@@ -118,8 +120,12 @@ Reporting is split by surface:
 - `reporting/console.py`
 - `reporting/json_report.py`
 - `reporting/markdown_report.py`
+- `reporting/html_report.py`
+- `reporting/view_models.py`
 
-The JSON report is stable and machine-readable. The Markdown report is human-readable. The console summary is optimized for CI and local terminal feedback.
+All renderers consume the same canonical `VerificationReport` model. Shared presenter logic lives in `view_models.py` so the CLI, GitHub markdown summary, and HTML report stay aligned.
+
+The JSON report is stable and machine-readable. The Markdown report is job-summary friendly. The HTML report is the static investigation surface. The console summary is optimized for CI and local terminal feedback.
 
 By default, raw payload bodies are not included in report details.
 

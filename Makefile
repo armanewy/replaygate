@@ -1,6 +1,6 @@
 PYTHON ?= python
 
-.PHONY: install lint format test verify-example-pass verify-example-fail
+.PHONY: install lint format test verify-example-pass verify-example-fail report-example
 
 install:
 	$(PYTHON) -m pip install --upgrade pip
@@ -20,3 +20,6 @@ verify-example-pass:
 
 verify-example-fail:
 	$(PYTHON) -m replaygate.cli verify --config examples/temporal/replaygate.yaml
+
+report-example:
+	$(PYTHON) -m replaygate.cli report --input examples/temporal/artifacts/report.json --html examples/temporal/artifacts/report.html

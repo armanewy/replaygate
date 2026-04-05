@@ -1,28 +1,35 @@
-# Replay Gate Report
+## Replay Gate — PASSED
+**Tool:** 0.1.0  
+**Project:** replay-gate-examples  
+**Engine:** temporal  
+**Config:** `examples/temporal/replaygate.pass.yaml`  
+**Git SHA:** `ebff8c6`  
+**Histories checked:** 2  
+**Passed:** 2  
+**Failed:** 0  
+**Skipped:** 0  
+**Errors:** 0  
+**Workflow types covered:** 2
 
-- Status: **PASSED**
-- Project: `replay-gate-examples`
-- Engine: `temporal`
-- Histories checked: `2`
-- Passed: `2`
-- Failed: `0`
-- Errors: `0`
-- Skipped: `0`
+### Policy decision
+This change passes replay safety policy.
 
-## Policy
+Violations:
+- none
 
-- all checks passed
+### Failure breakdown
+- none
 
-## Results
+### Workflow type breakdown
 
-### PaymentWorkflow / `histories/payment_history.json`
+| Workflow type | Checked | Passed | Failed | Skipped | Errors | Dominant failure | Risk | Notes |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- |
+| PaymentWorkflow | 1 | 1 | 0 | 0 | 0 | none | low | all passed |
+| RefundWorkflow | 1 | 1 | 0 | 0 | 0 | none | low | all passed |
 
-- Status: `passed`
-- Compatibility: `compatible`
-- Risk: `low`
-
-### RefundWorkflow / `histories/refund_history.json`
-
-- Status: `passed`
-- Compatibility: `compatible`
-- Risk: `low`
+### Top failing histories
+- none
+### Artifacts
+- JSON: `artifacts/report.pass.json`
+- Markdown: `artifacts/report.pass.md`
+- HTML: `artifacts/report.pass.html`

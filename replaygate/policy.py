@@ -3,7 +3,13 @@
 from __future__ import annotations
 
 from replaygate.config import PolicyConfig
-from replaygate.models import CompatibilityStatus, PolicyDecision, ReplayResult, ReplayStatus
+from replaygate.models import (
+    CompatibilityStatus,
+    PolicyDecision,
+    PolicyDecisionValue,
+    ReplayResult,
+    ReplayStatus,
+)
 
 
 def evaluate_policy(policy: PolicyConfig, results: list[ReplayResult]) -> PolicyDecision:
@@ -32,6 +38,7 @@ def evaluate_policy(policy: PolicyConfig, results: list[ReplayResult]) -> Policy
 
     return PolicyDecision(
         passed=not violated_rules,
+        decision=PolicyDecisionValue.PASS if not violated_rules else PolicyDecisionValue.FAIL,
         violated_rules=violated_rules,
         observed_failures=failures,
         observed_unknown=unknown,

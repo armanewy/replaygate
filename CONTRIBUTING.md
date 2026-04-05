@@ -30,6 +30,7 @@ make test
 make lint
 make verify-example-pass
 make verify-example-fail
+python -m replaygate.cli report --input examples/temporal/artifacts/report.json --html examples/temporal/artifacts/report.html
 ```
 
 Equivalent direct commands:

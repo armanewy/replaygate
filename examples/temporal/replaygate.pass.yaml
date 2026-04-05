@@ -19,6 +19,7 @@ verification:
   outputs:
     json: ./artifacts/report.pass.json
     markdown: ./artifacts/report.pass.md
+    html: ./artifacts/report.pass.html
 
 policy:
   fail_on:

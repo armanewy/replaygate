@@ -1,32 +1,39 @@
-# Replay Gate Report
+## Replay Gate — FAILED
+**Tool:** 0.1.0  
+**Project:** payments-workflows  
+**Engine:** temporal  
+**Config:** `examples/temporal/replaygate.yaml`  
+**Git SHA:** `abc123`  
+**Histories checked:** 1  
+**Passed:** 0  
+**Failed:** 1  
+**Skipped:** 0  
+**Errors:** 0  
+**Workflow types covered:** 1
 
-- Status: **FAILED**
-- Project: `payments-workflows`
-- Engine: `temporal`
-- Histories checked: `1`
-- Passed: `0`
-- Failed: `1`
-- Errors: `0`
-- Skipped: `0`
+### Policy decision
+This change fails replay safety policy.
 
-## Policy
+Violations:
+- `max_failures=0 -> violated (1 observed)`
 
-- max_failures=0 -> violated (1 observed)
+### Failure breakdown
+- nondeterminism: 1
 
-## Results
+### Workflow type breakdown
 
-### PaymentWorkflow / `histories/payment.json`
+| Workflow type | Checked | Passed | Failed | Skipped | Errors | Dominant failure | Risk | Notes |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- |
+| PaymentWorkflow | 1 | 0 | 1 | 0 | 0 | nondeterminism | critical | nondeterminism detected |
 
-- Status: `failed`
-- Compatibility: `incompatible`
-- Risk: `critical`
-- Failure kind: `nondeterminism`
-- Summary: command mismatch during replay
-- Likely cause: workflow command sequence changed
-- Remediation: add Temporal versioning or patch gates
+### Top failing histories
+1. `histories/payment.json` — `PaymentWorkflow`  
+   **Kind:** nondeterminism  
+   **Summary:** command mismatch during replay  
+   **Likely cause:** workflow command sequence changed  
+   **Hint:** add Temporal versioning or patch gates
 
-## Top Failures
-
-1. `PaymentWorkflow` / `histories/payment.json`
-   - kind: `nondeterminism`
-   - summary: command mismatch during replay
+### Artifacts
+- JSON: `artifacts/report.json`
+- Markdown: `artifacts/report.md`
+- HTML: `artifacts/report.html`

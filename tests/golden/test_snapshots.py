@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from replaygate.reporting.console import render_console_summary
+from replaygate.reporting.html_report import render_html_report
 from replaygate.reporting.json_report import render_json_report
 from replaygate.reporting.markdown_report import render_markdown_report
 from tests.support import sample_report
@@ -25,4 +26,10 @@ def test_markdown_snapshot() -> None:
 def test_console_snapshot() -> None:
     rendered = render_console_summary(sample_report())
     expected = (SNAPSHOT_DIR / "console.txt").read_text(encoding="utf-8")
+    assert rendered == expected
+
+
+def test_html_snapshot() -> None:
+    rendered = render_html_report(sample_report())
+    expected = (SNAPSHOT_DIR / "report.html").read_text(encoding="utf-8")
     assert rendered == expected

@@ -1,4 +1,9 @@
 {
+  "artifacts": {
+    "html": "artifacts/report.corrupted.html",
+    "json": "artifacts/report.corrupted.json",
+    "markdown": "artifacts/report.corrupted.md"
+  },
   "candidate": {
     "engine": "temporal",
     "metadata": {},
@@ -8,8 +13,12 @@
     ],
     "source": "examples.temporal.workflows"
   },
-  "engine": "temporal",
+  "failure_breakdown": {
+    "corrupted_history": 1
+  },
+  "generated_at": "2026-04-05T14:58:31.038833Z",
   "policy": {
+    "decision": "fail",
     "observed_failures": 1,
     "observed_unknown": 1,
     "passed": false,
@@ -19,7 +28,10 @@
       "fail_on=corrupted_history -> violated"
     ]
   },
-  "project_name": "replay-gate-examples",
+  "project": {
+    "engine": "temporal",
+    "name": "replay-gate-examples"
+  },
   "results": [
     {
       "artifact": {
@@ -48,16 +60,41 @@
   ],
   "run": {
     "config_path": "examples\\temporal\\replaygate.corrupted.yaml",
-    "duration_ms": 199,
-    "finished_at": "2026-04-05T14:38:29.198508Z",
-    "started_at": "2026-04-05T14:38:28.998512Z"
+    "duration_ms": 184,
+    "finished_at": "2026-04-05T14:58:31.038833Z",
+    "started_at": "2026-04-05T14:58:30.854341Z"
   },
-  "schema_version": "1",
+  "schema_version": "2",
+  "settings": {
+    "adapter_mode": "local_module",
+    "max_histories": 50,
+    "redact_payloads_in_reports": true,
+    "selection_strategy": "all"
+  },
+  "source": {
+    "config_path": "examples/temporal/replaygate.corrupted.yaml",
+    "git_sha": "ebff8c6"
+  },
   "summary": {
-    "errors": 1,
+    "errored": 1,
     "failed": 0,
     "passed": 0,
     "skipped": 0,
-    "total_histories": 1
-  }
+    "total_histories": 1,
+    "workflow_types": 0
+  },
+  "tool_version": "0.1.0",
+  "workflow_breakdown": [
+    {
+      "checked": 1,
+      "dominant_failure_kind": "corrupted_history",
+      "errored": 1,
+      "failed": 0,
+      "notes": "corrupted_history detected",
+      "passed": 0,
+      "risk_level": "medium",
+      "skipped": 0,
+      "workflow_type": "unknown-workflow"
+    }
+  ]
 }

@@ -19,11 +19,12 @@ Replay Gate is a pre-deploy safety gate for that class of failure.
 - real Temporal replay using the Temporal Python SDK
 - local/file-based history ingestion
 - typed YAML config
-- `replay-gate verify`, `init`, and `explain`
-- JSON, Markdown, and console reports
+- `replay-gate verify`, `init`, `explain`, and `report`
+- JSON, Markdown, HTML, and console reports
 - policy thresholds with non-zero exit codes
+- quiet, verbose, and JSON stdout CLI modes
 - passing and failing Temporal example configs
-- GitHub composite action wrapper
+- GitHub composite action wrapper plus job-summary/artifact example
 - unit, integration, and golden tests
 
 ### Intentionally out of scope
@@ -42,8 +43,8 @@ Replay Gate is a pre-deploy safety gate for that class of failure.
 - Temporal workflow module loading
 - replay execution via `temporalio.worker.Replayer`
 - nondeterminism and workflow-type failure classification
-- deterministic reports
-- GitHub Action wrapper
+- deterministic JSON, markdown, HTML, and console rendering
+- GitHub Action wrapper and job summary integration
 
 ### Deferred, not faked
 
@@ -79,10 +80,16 @@ Explain the generated failing report:
 python -m replaygate.cli explain --report examples/temporal/artifacts/report.json
 ```
 
+Re-render HTML from JSON:
+
+```bash
+python -m replaygate.cli report --input examples/temporal/artifacts/report.json --html examples/temporal/artifacts/report.html
+```
+
 Initialize a new config:
 
 ```bash
-python -m replaygate.cli init --output replaygate.yaml
+python -m replaygate.cli init --engine temporal --output replaygate.yaml
 ```
 
 ## Sample Output
@@ -90,23 +97,34 @@ python -m replaygate.cli init --output replaygate.yaml
 Failing Temporal example:
 
 ```text
-Replay Gate: FAILED
+Replay Gate 0.1.0
 Project: replay-gate-examples
 Engine: temporal
+Config: examples/temporal/replaygate.yaml
+
+VERDICT: FAILED
+Policy decision: fail
 Histories checked: 2
-Passed: 1
-Failed: 1
-Errors: 0
-Skipped: 0
+Passed: 1  Failed: 1  Skipped: 0  Errors: 0
 
-Top failures:
-1. PaymentWorkflow / histories/payment_history.json
-   kind: nondeterminism
-   summary: Replay failed due to a command mismatch during replay.
-
-Policy:
+Policy violations:
 - max_failures=0 -> violated (1 observed)
 - fail_on=nondeterminism -> violated
+
+Failure breakdown:
+- nondeterminism: 1
+
+Top failing histories:
+1. histories/payment_history.json
+   workflow: PaymentWorkflow
+   kind: nondeterminism
+   summary: Replay failed due to a command mismatch during replay.
+   hint: Review recent workflow code changes and add Temporal versioning or patch gates before deploying.
+
+Artifacts:
+- JSON: artifacts/report.json
+- Markdown: artifacts/report.md
+- HTML: artifacts/report.html
 ```
 
 Checked-in sample reports live under `examples/temporal/expected/`.
@@ -116,6 +134,8 @@ Checked-in sample reports live under `examples/temporal/expected/`.
 ```bash
 make test
 make lint
+make verify-example-pass
+make verify-example-fail
 ```
 
 Equivalent direct commands:
@@ -123,6 +143,7 @@ Equivalent direct commands:
 ```bash
 python -m pytest
 python -m ruff check replaygate tests examples
+python -m mypy replaygate
 ```
 
 ## Security And Data Handling
@@ -141,6 +162,11 @@ Use the local composite action from this repo:
   with:
     config: examples/temporal/replaygate.pass.yaml
 ```
+
+The sample CI workflow also:
+
+- appends `report.pass.md` to `$GITHUB_STEP_SUMMARY`
+- uploads the generated JSON, markdown, and HTML artifacts
 
 See `.github/workflows/ci.yml` for a working example.
 

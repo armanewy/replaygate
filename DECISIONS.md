@@ -29,3 +29,7 @@ The MVP ships with sanitized Temporal history envelopes generated from a local T
 ## D-006: Default to suppressing raw payloads in report details
 
 Reports are designed to be useful without copying raw workflow payload bodies into JSON or Markdown outputs. The MVP keeps report details metadata-light and exposes a placeholder redaction hook for future customization.
+
+## D-007: One canonical report model drives every UX surface
+
+The CLI, GitHub markdown summary, JSON artifact, and static HTML report all render from the same `VerificationReport` structure. Shared presentation logic lives in `reporting/view_models.py` so failure wording, counts, workflow grouping, and artifact references stay consistent across surfaces.

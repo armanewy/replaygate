@@ -1,67 +1,104 @@
-"""Markdown report rendering."""
+"""Markdown and GitHub summary rendering."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
-from replaygate.models import ReplayStatus, VerificationReport
+from replaygate.models import VerificationReport
+from replaygate.reporting.view_models import build_report_view
 
 
 def render_markdown_report(report: VerificationReport) -> str:
-    status = "PASSED" if report.policy.passed else "FAILED"
+    view = build_report_view(report)
     lines = [
-        "# Replay Gate Report",
-        "",
-        f"- Status: **{status}**",
-        f"- Project: `{report.project_name}`",
-        f"- Engine: `{report.engine.value}`",
-        f"- Histories checked: `{report.summary.total_histories}`",
-        f"- Passed: `{report.summary.passed}`",
-        f"- Failed: `{report.summary.failed}`",
-        f"- Errors: `{report.summary.errors}`",
-        f"- Skipped: `{report.summary.skipped}`",
-        "",
-        "## Policy",
-        "",
+        f"## Replay Gate — {view.verdict}",
+        f"**Tool:** {view.tool_version}  ",
+        f"**Project:** {view.project_name}  ",
+        f"**Engine:** {view.engine}  ",
+        f"**Config:** `{view.config_path}`  ",
     ]
+    if view.git_sha is not None:
+        lines.append(f"**Git SHA:** `{view.git_sha}`  ")
+    lines.extend(
+        [
+            f"**Histories checked:** {view.histories_checked}  ",
+            f"**Passed:** {view.passed}  ",
+            f"**Failed:** {view.failed}  ",
+            f"**Skipped:** {view.skipped}  ",
+            f"**Errors:** {view.errored}  ",
+            f"**Workflow types covered:** {view.workflow_types}",
+            "",
+            "### Policy decision",
+            view.policy_summary,
+            "",
+        ]
+    )
 
-    if report.policy.violated_rules:
-        for rule in report.policy.violated_rules:
-            lines.append(f"- {rule}")
+    if view.violations:
+        lines.append("Violations:")
+        for rule in view.violations:
+            lines.append(f"- `{rule}`")
     else:
-        lines.append("- all checks passed")
+        lines.append("Violations:")
+        lines.append("- none")
 
-    lines.extend(["", "## Results", ""])
-    for result in report.results:
-        lines.append(f"### {result.workflow_type or 'unknown-workflow'} / `{result.artifact.path}`")
-        lines.append("")
-        lines.append(f"- Status: `{result.status.value}`")
-        lines.append(f"- Compatibility: `{result.compatibility_status.value}`")
-        lines.append(f"- Risk: `{result.risk_level.value}`")
-        if result.failure is not None:
-            lines.append(f"- Failure kind: `{result.failure.kind.value}`")
-            lines.append(f"- Summary: {result.failure.summary}")
-            lines.append(f"- Likely cause: {result.failure.likely_cause}")
-            lines.append(f"- Remediation: {result.failure.remediation_hint}")
-        lines.append("")
+    lines.extend(["", "### Failure breakdown"])
+    if view.failure_breakdown:
+        for item in view.failure_breakdown:
+            lines.append(f"- {item.label}: {item.count}")
+    else:
+        lines.append("- none")
 
-    failures = [
-        result
-        for result in report.results
-        if result.status in {ReplayStatus.FAILED, ReplayStatus.ERROR} and result.failure is not None
-    ]
-    if failures:
-        lines.extend(["## Top Failures", ""])
-        for index, result in enumerate(failures[:5], start=1):
-            failure = result.failure
-            assert failure is not None
-            workflow_name = result.workflow_type or "unknown-workflow"
-            lines.append(f"{index}. `{workflow_name}` / `{result.artifact.path}`")
-            lines.append(f"   - kind: `{failure.kind.value}`")
-            lines.append(f"   - summary: {failure.summary}")
-        lines.append("")
+    lines.extend(
+        [
+            "",
+            "### Workflow type breakdown",
+            "",
+            (
+                "| Workflow type | Checked | Passed | Failed | Skipped | "
+                "Errors | Dominant failure | Risk | Notes |"
+            ),
+            "| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- |",
+        ]
+    )
+    for row in view.workflow_breakdown:
+        dominant = (
+            row.dominant_failure_kind.value if row.dominant_failure_kind is not None else "none"
+        )
+        lines.append(
+            f"| {row.workflow_type} | {row.checked} | {row.passed} | {row.failed} | "
+            f"{row.skipped} | {row.errored} | {dominant} | {row.risk_level.value} | "
+            f"{row.notes or ''} |"
+        )
+
+    lines.extend(["", "### Top failing histories"])
+    if view.top_failures:
+        for index, result in enumerate(view.top_failures, start=1):
+            lines.extend(
+                [
+                    f"{index}. `{result.path}` — `{result.workflow_type}`  ",
+                    f"   **Kind:** {result.failure_kind}  ",
+                    f"   **Summary:** {result.summary}  ",
+                    f"   **Likely cause:** {result.likely_cause or '-'}  ",
+                    f"   **Hint:** {result.remediation_hint or '-'}",
+                    "",
+                ]
+            )
+    else:
+        lines.append("- none")
+
+    lines.extend(["### Artifacts"])
+    if view.artifacts:
+        for artifact in view.artifacts:
+            lines.append(f"- {artifact.label}: `{artifact.path}`")
+    else:
+        lines.append("- none")
 
     return "\n".join(lines).rstrip() + "\n"
+
+
+def render_github_summary(report: VerificationReport) -> str:
+    return render_markdown_report(report)
 
 
 def write_markdown_report(report: VerificationReport, output_path: Path) -> Path:

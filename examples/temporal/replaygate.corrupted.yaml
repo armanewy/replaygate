@@ -13,6 +13,7 @@ verification:
   outputs:
     json: ./artifacts/report.corrupted.json
     markdown: ./artifacts/report.corrupted.md
+    html: ./artifacts/report.corrupted.html
 
 policy:
   fail_on:

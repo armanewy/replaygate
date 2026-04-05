@@ -16,3 +16,5 @@ def test_init_writes_default_config(tmp_path: Path) -> None:
     assert result.exit_code == 0
     assert output.exists()
     assert "engine: temporal" in output.read_text(encoding="utf-8")
+    assert (tmp_path / "artifacts").exists()
+    assert (tmp_path / "histories").exists()

@@ -16,6 +16,7 @@ def test_default_config_template_parses(tmp_path: Path) -> None:
     assert loaded.project.engine is WorkflowEngine.TEMPORAL
     assert loaded.temporal is not None
     assert loaded.verification.history_sources[0].glob == "*.json"
+    assert loaded.verification.outputs.html_path == "./artifacts/report.html"
 
 
 def test_relative_output_resolution(tmp_path: Path) -> None:

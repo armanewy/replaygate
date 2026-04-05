@@ -1,16 +1,28 @@
-Replay Gate: FAILED
+Replay Gate 0.1.0
 Project: payments-workflows
 Engine: temporal
-Histories checked: 1
-Passed: 0
-Failed: 1
-Errors: 0
-Skipped: 0
+Config: examples/temporal/replaygate.yaml
+Git SHA: abc123
 
-Top failures:
-1. PaymentWorkflow / histories/payment.json
+VERDICT: FAILED
+Policy decision: fail
+Histories checked: 1
+Passed: 0  Failed: 1  Skipped: 0  Errors: 0
+
+Policy violations:
+- max_failures=0 -> violated (1 observed)
+
+Failure breakdown:
+- nondeterminism: 1
+
+Top failing histories:
+1. histories/payment.json
+   workflow: PaymentWorkflow
    kind: nondeterminism
    summary: command mismatch during replay
+   hint: add Temporal versioning or patch gates
 
-Policy:
-- max_failures=0 -> violated (1 observed)
+Artifacts:
+- JSON: artifacts/report.json
+- Markdown: artifacts/report.md
+- HTML: artifacts/report.html

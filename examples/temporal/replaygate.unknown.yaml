@@ -13,6 +13,7 @@ verification:
   outputs:
     json: ./artifacts/report.unknown.json
     markdown: ./artifacts/report.unknown.md
+    html: ./artifacts/report.unknown.html
 
 policy:
   fail_on:

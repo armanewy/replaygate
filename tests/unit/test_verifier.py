@@ -83,6 +83,7 @@ verification:
   outputs:
     json: ./artifacts/report.json
     markdown: ./artifacts/report.md
+    html: ./artifacts/report.html
 policy:
   fail_on: []
   max_unknown: 0
@@ -101,8 +102,11 @@ temporal:
 
     assert execution.exit_code == 0
     assert execution.report.summary.passed == 1
+    assert execution.report.summary.workflow_types == 1
+    assert execution.report.artifacts.json_report == "artifacts/report.json"
     assert (tmp_path / "artifacts" / "report.json").exists()
     assert (tmp_path / "artifacts" / "report.md").exists()
+    assert (tmp_path / "artifacts" / "report.html").exists()
 
 
 def test_verify_config_builds_missing_history_result(tmp_path: Path) -> None:

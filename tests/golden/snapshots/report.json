@@ -1,4 +1,9 @@
 {
+  "artifacts": {
+    "html": "artifacts/report.html",
+    "json": "artifacts/report.json",
+    "markdown": "artifacts/report.md"
+  },
   "candidate": {
     "engine": "temporal",
     "metadata": {},
@@ -7,8 +12,12 @@
     ],
     "source": "examples.temporal.workflows"
   },
-  "engine": "temporal",
+  "failure_breakdown": {
+    "nondeterminism": 1
+  },
+  "generated_at": "2026-01-01T12:00:00Z",
   "policy": {
+    "decision": "fail",
     "observed_failures": 1,
     "observed_unknown": 0,
     "passed": false,
@@ -16,7 +25,10 @@
       "max_failures=0 -> violated (1 observed)"
     ]
   },
-  "project_name": "payments-workflows",
+  "project": {
+    "engine": "temporal",
+    "name": "payments-workflows"
+  },
   "results": [
     {
       "artifact": {
@@ -51,12 +63,37 @@
     "finished_at": "2026-01-01T00:00:00Z",
     "started_at": "2026-01-01T00:00:00Z"
   },
-  "schema_version": "1",
+  "schema_version": "2",
+  "settings": {
+    "adapter_mode": "local_module",
+    "max_histories": 50,
+    "redact_payloads_in_reports": true,
+    "selection_strategy": "all"
+  },
+  "source": {
+    "config_path": "examples/temporal/replaygate.yaml",
+    "git_sha": "abc123"
+  },
   "summary": {
-    "errors": 0,
+    "errored": 0,
     "failed": 1,
     "passed": 0,
     "skipped": 0,
-    "total_histories": 1
-  }
+    "total_histories": 1,
+    "workflow_types": 1
+  },
+  "tool_version": "0.1.0",
+  "workflow_breakdown": [
+    {
+      "checked": 1,
+      "dominant_failure_kind": "nondeterminism",
+      "errored": 0,
+      "failed": 1,
+      "notes": "nondeterminism detected",
+      "passed": 0,
+      "risk_level": "critical",
+      "skipped": 0,
+      "workflow_type": "PaymentWorkflow"
+    }
+  ]
 }

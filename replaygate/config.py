@@ -38,6 +38,7 @@ class OutputConfig(BaseModel):
 
     json_path: str | None = Field(default=None, alias="json")
     markdown_path: str | None = Field(default=None, alias="markdown")
+    html_path: str | None = Field(default=None, alias="html")
 
 
 class VerificationConfig(BaseModel):
@@ -117,6 +118,7 @@ verification:
   outputs:
     json: ./artifacts/report.json
     markdown: ./artifacts/report.md
+    html: ./artifacts/report.html
 
 policy:
   fail_on:

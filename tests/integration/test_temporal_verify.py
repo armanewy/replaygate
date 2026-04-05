@@ -45,6 +45,7 @@ def write_config(
                 "  outputs:",
                 "    json: ./artifacts/report.json",
                 "    markdown: ./artifacts/report.md",
+                "    html: ./artifacts/report.html",
                 "",
                 "policy:",
                 "  fail_on:",
@@ -79,11 +80,12 @@ def test_temporal_cli_passes_with_compatible_workflows(tmp_path: Path) -> None:
     result = runner.invoke(app, ["verify", "--config", str(config_path)])
 
     assert result.exit_code == 0
-    assert "Replay Gate: PASSED" in result.stdout
+    assert "VERDICT: PASSED" in result.stdout
     report = VerificationReport.model_validate_json(
         (tmp_path / "artifacts" / "report.json").read_text(encoding="utf-8")
     )
     assert report.summary.passed == 2
+    assert (tmp_path / "artifacts" / "report.html").exists()
 
 
 def test_temporal_cli_fails_with_nondeterminism(tmp_path: Path) -> None:
@@ -142,3 +144,48 @@ def test_temporal_cli_reports_corrupted_history(tmp_path: Path) -> None:
     )
     assert report.results[0].failure is not None
     assert report.results[0].failure.kind is FailureKind.CORRUPTED_HISTORY
+
+
+def test_temporal_cli_json_mode_emits_machine_report(tmp_path: Path) -> None:
+    config_path = write_config(
+        tmp_path,
+        workflow_module="examples.temporal.workflows",
+        history_globs=["payment_history.json"],
+        fail_on=["nondeterminism"],
+    )
+    runner = CliRunner()
+
+    result = runner.invoke(app, ["verify", "--config", str(config_path), "--json"])
+
+    assert result.exit_code == 0
+    assert '"tool_version": "0.1.0"' in result.stdout
+
+
+def test_report_command_rerenders_html(tmp_path: Path) -> None:
+    config_path = write_config(
+        tmp_path,
+        workflow_module="examples.temporal.workflows_breaking",
+        history_globs=["payment_history.json"],
+        fail_on=["nondeterminism"],
+    )
+    runner = CliRunner()
+    verify_result = runner.invoke(app, ["verify", "--config", str(config_path)])
+
+    assert verify_result.exit_code == 1
+    output_path = tmp_path / "rerendered.html"
+    report_result = runner.invoke(
+        app,
+        [
+            "report",
+            "--input",
+            str(tmp_path / "artifacts" / "report.json"),
+            "--html",
+            str(output_path),
+        ],
+    )
+
+    assert report_result.exit_code == 0
+    assert output_path.exists()
+    assert "<title>Replay Gate Report - integration-demo</title>" in output_path.read_text(
+        encoding="utf-8"
+    )

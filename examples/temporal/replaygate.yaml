@@ -19,6 +19,7 @@ verification:
   outputs:
     json: ./artifacts/report.json
     markdown: ./artifacts/report.md
+    html: ./artifacts/report.html
 
 policy:
   fail_on:

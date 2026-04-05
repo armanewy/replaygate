@@ -9,7 +9,7 @@ from replaygate.models import VerificationReport
 
 
 def render_json_report(report: VerificationReport) -> str:
-    payload = report.model_dump(mode="json", exclude_none=True)
+    payload = report.model_dump(mode="json", by_alias=True, exclude_none=True)
     return json.dumps(payload, indent=2, sort_keys=True) + "\n"
 
 
