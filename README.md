@@ -144,15 +144,19 @@ Checked-in sample reports live under `examples/temporal/expected/`.
 
 ## Report Walkthrough
 
-These screenshots are taken from the generated failing report for `examples/temporal/replaygate.yaml`.
+These screenshots are taken from the generated failing report for `examples/temporal/replaygate.yaml` after running `replay-gate verify`.
 
-Overview: sticky verdict strip, compact run metadata, and the first diagnosis block.
+Overview: sticky verdict strip, compact run metadata, and the report sections ordered for deploy-risk review.
 
 ![Replay Gate HTML report overview](docs/screenshots/report-overview.png)
 
 Failure diagnosis: policy violations, most affected workflow, primary cause, and the recommended next action.
 
 ![Replay Gate HTML report diagnosis section](docs/screenshots/report-why-this-failed.png)
+
+Top failing history: the clearest failing example with summary, likely cause, remediation, and expandable raw details.
+
+![Replay Gate HTML report top failing history](docs/screenshots/report-top-failing-histories.png)
 
 Results table: the evidence surface for filtering by workflow and failure kind, then drilling into row details.
 
