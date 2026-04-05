@@ -17,11 +17,11 @@ Ship a working MVP for pre-deploy workflow replay verification with a real Tempo
 
 ### Milestone 1: Core skeleton
 
-- [ ] Typed config schema
-- [ ] Domain models
-- [ ] CLI skeleton
-- [ ] Base adapter interface
-- [ ] Test harness
+- [x] Typed config schema
+- [x] Domain models
+- [x] CLI skeleton
+- [x] Base adapter interface
+- [x] Test harness
 
 ### Milestone 2: Verification engine
 

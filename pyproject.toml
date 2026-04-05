@@ -34,8 +34,8 @@ temporal = [
 [project.scripts]
 replay-gate = "replaygate.cli:app"
 
-[tool.setuptools]
-packages = ["replaygate"]
+[tool.setuptools.packages.find]
+include = ["replaygate*"]
 
 [tool.ruff]
 line-length = 100
