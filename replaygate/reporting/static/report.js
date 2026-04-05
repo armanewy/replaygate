@@ -1,3 +1,5 @@
+const topbar = document.querySelector(".topbar");
+
 const searchInput = document.getElementById("searchInput");
 const workflowFilter = document.getElementById("workflowFilter");
 const failureFilter = document.getElementById("failureFilter");
@@ -5,6 +7,17 @@ const failedOnly = document.getElementById("failedOnly");
 const rows = Array.from(document.querySelectorAll("#resultsTable tbody tr"));
 const visibleCount = document.getElementById("visibleCount");
 const resultsEmpty = document.getElementById("resultsEmpty");
+
+function syncStickyOffset() {
+  if (!topbar) {
+    return;
+  }
+  const offset = Math.ceil(topbar.getBoundingClientRect().height);
+  document.documentElement.style.setProperty(
+    "--sticky-top-offset",
+    `${offset}px`,
+  );
+}
 
 function applyFilters() {
   const search = searchInput.value.trim().toLowerCase();
@@ -29,6 +42,9 @@ function applyFilters() {
   visibleCount.textContent = String(visible);
   resultsEmpty.hidden = visible !== 0;
 }
+
+syncStickyOffset();
+window.addEventListener("resize", syncStickyOffset);
 
 [searchInput, workflowFilter, failureFilter, failedOnly].forEach((node) => {
   node.addEventListener("input", applyFilters);

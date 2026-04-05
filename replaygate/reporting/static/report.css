@@ -21,10 +21,11 @@
   --neutral-soft: #eef2f7;
   --mono: "Consolas", "SFMono-Regular", "Liberation Mono", monospace;
   --body: "Segoe UI", "Aptos", system-ui, sans-serif;
+  --sticky-top-offset: 56px;
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--sticky-top-offset) + 12px); }
 
 body {
   margin: 0;
@@ -187,6 +188,11 @@ strong { color: var(--ink); }
   margin-top: 24px;
 }
 
+.section,
+.advanced-panel {
+  scroll-margin-top: calc(var(--sticky-top-offset) + 12px);
+}
+
 .section-heading {
   display: grid;
   gap: 6px;
@@ -336,7 +342,7 @@ th {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   position: sticky;
-  top: 0;
+  top: var(--sticky-top-offset);
   z-index: 1;
 }
 

@@ -137,11 +137,18 @@ def policy_summary_for_report(report: VerificationReport) -> str:
 
 
 def build_failure_breakdown_items(report: VerificationReport) -> list[BreakdownItem]:
-    return [
+    items = [
         BreakdownItem(label=kind.value, count=count)
         for kind, count in report.failure_breakdown.items()
         if count > 0
     ]
+    items.sort(
+        key=lambda item: (
+            -item.count,
+            item.label,
+        )
+    )
+    return items
 
 
 def build_artifact_items(artifacts: ArtifactManifest) -> list[ArtifactItem]:

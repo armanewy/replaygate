@@ -27,10 +27,11 @@
   --neutral-soft: #eef2f7;
   --mono: "Consolas", "SFMono-Regular", "Liberation Mono", monospace;
   --body: "Segoe UI", "Aptos", system-ui, sans-serif;
+  --sticky-top-offset: 56px;
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--sticky-top-offset) + 12px); }
 
 body {
   margin: 0;
@@ -193,6 +194,11 @@ strong { color: var(--ink); }
   margin-top: 24px;
 }
 
+.section,
+.advanced-panel {
+  scroll-margin-top: calc(var(--sticky-top-offset) + 12px);
+}
+
 .section-heading {
   display: grid;
   gap: 6px;
@@ -342,7 +348,7 @@ th {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   position: sticky;
-  top: 0;
+  top: var(--sticky-top-offset);
   z-index: 1;
 }
 
@@ -944,13 +950,26 @@ label.checkbox {
       </div>
     </details>
   </main>
-  <script>const searchInput = document.getElementById("searchInput");
+  <script>const topbar = document.querySelector(".topbar");
+
+const searchInput = document.getElementById("searchInput");
 const workflowFilter = document.getElementById("workflowFilter");
 const failureFilter = document.getElementById("failureFilter");
 const failedOnly = document.getElementById("failedOnly");
 const rows = Array.from(document.querySelectorAll("#resultsTable tbody tr"));
 const visibleCount = document.getElementById("visibleCount");
 const resultsEmpty = document.getElementById("resultsEmpty");
+
+function syncStickyOffset() {
+  if (!topbar) {
+    return;
+  }
+  const offset = Math.ceil(topbar.getBoundingClientRect().height);
+  document.documentElement.style.setProperty(
+    "--sticky-top-offset",
+    `${offset}px`,
+  );
+}
 
 function applyFilters() {
   const search = searchInput.value.trim().toLowerCase();
@@ -975,6 +994,9 @@ function applyFilters() {
   visibleCount.textContent = String(visible);
   resultsEmpty.hidden = visible !== 0;
 }
+
+syncStickyOffset();
+window.addEventListener("resize", syncStickyOffset);
 
 [searchInput, workflowFilter, failureFilter, failedOnly].forEach((node) => {
   node.addEventListener("input", applyFilters);
