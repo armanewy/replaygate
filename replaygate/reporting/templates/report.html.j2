@@ -25,26 +25,8 @@
     <header class="report-head">
       <div class="report-copy">
         <div class="report-kicker">Replay verification report</div>
-        <h1>{{ view.project_name }}</h1>
-        <p class="report-meta">Engine {{ view.engine }} · Generated {{ view.generated_at }}{% if view.git_sha %} · Git SHA {{ view.git_sha }}{% endif %}</p>
-      </div>
-      <div class="report-utility">
-        <div class="utility-item">
-          <div class="eyebrow">Config</div>
-          <div class="meta-value">{{ view.config_path }}</div>
-        </div>
-        <div class="utility-item">
-          <div class="eyebrow">Selection strategy</div>
-          <div class="meta-value">{{ view.selection_strategy }}</div>
-        </div>
-        <div class="utility-item">
-          <div class="eyebrow">Adapter mode</div>
-          <div class="meta-value">{{ view.adapter_mode }}</div>
-        </div>
-        <div class="utility-item">
-          <div class="eyebrow">Tool version</div>
-          <div class="meta-value">{{ view.tool_version }}</div>
-        </div>
+        <h1>Replay verification report</h1>
+        <p class="report-meta">Project {{ view.project_name }} · Engine {{ view.engine }} · Generated {{ view.generated_at }}{% if view.git_sha %} · Git SHA {{ view.git_sha }}{% endif %}</p>
       </div>
     </header>
 
@@ -57,12 +39,12 @@
     <section id="why-this-failed" class="section section-block">
       <div class="section-heading">
         <h2>{{ diagnosis_heading }}</h2>
-        <p>The first screen is optimized for the deployment decision: what failed, what is affected, and what to do next.</p>
+        <p>Start here: violated rules, primary cause, affected workflow, and the recommended next action.</p>
       </div>
       <div class="split-panels">
         <article class="panel">
-          <div class="eyebrow">Policy decision</div>
-          <h3>{{ view.policy_decision|upper }}</h3>
+          <div class="eyebrow">Violated rules</div>
+          <h3>Policy {{ view.policy_decision|upper }}</h3>
           <p>{{ view.policy_summary }}</p>
           {% if view.violations %}
           <ul class="plain-list">
@@ -78,14 +60,14 @@
           <div class="eyebrow">Diagnosis</div>
           <div class="diagnosis-grid">
             <div class="diagnosis-item">
-              <span class="eyebrow">Most affected workflow</span>
-              <strong>{{ highlight_workflow.workflow_type if highlight_workflow else "none" }}</strong>
-              <p>{% if highlight_workflow %}Risk {{ highlight_workflow.risk_level.value }} · {{ highlight_workflow.failed }} failed of {{ highlight_workflow.checked }} checked{% else %}No workflow breakdown available.{% endif %}</p>
-            </div>
-            <div class="diagnosis-item">
               <span class="eyebrow">Primary cause</span>
               <strong>{{ dominant_failure.label if dominant_failure else "none" }}</strong>
               <p>{{ top_likely_cause }}</p>
+            </div>
+            <div class="diagnosis-item">
+              <span class="eyebrow">Affected workflow</span>
+              <strong>{{ highlight_workflow.workflow_type if highlight_workflow else "none" }}</strong>
+              <p>{% if highlight_workflow %}Risk {{ highlight_workflow.risk_level.value }} · {{ highlight_workflow.failed }} failed of {{ highlight_workflow.checked }} checked{% else %}No workflow breakdown available.{% endif %}</p>
             </div>
             <div class="diagnosis-item">
               <span class="eyebrow">Recommended next action</span>
@@ -202,9 +184,9 @@
     <section id="all-results" class="section">
       <div class="section-heading">
         <h2>All Results</h2>
-        <p>The results table is the primary evidence surface. Secondary detail stays inside row expansion instead of taking table width.</p>
+        <p>The evidence surface for this run. Search, filter, then inspect row details without leaving the report.</p>
       </div>
-      <div class="table-card">
+      <div class="table-card evidence-card">
         <div class="filters">
           <input id="searchInput" type="search" placeholder="Search history ID, file, workflow, summary, or hint">
           <select id="workflowFilter">
@@ -275,6 +257,19 @@
     <details id="advanced-details" class="advanced-panel section">
       <summary>Advanced details</summary>
       <div class="advanced-body">
+        <section>
+          <div class="section-heading">
+            <h2>Run metadata</h2>
+            <p>Supporting run metadata that is useful for reproduction, but secondary to the diagnosis and evidence surfaces.</p>
+          </div>
+          <div class="snapshot-grid">
+            <div class="snapshot-item"><span class="snapshot-label">Config path</span><span class="snapshot-value">{{ view.config_path }}</span></div>
+            <div class="snapshot-item"><span class="snapshot-label">Selection strategy</span><span class="snapshot-value">{{ view.selection_strategy }}</span></div>
+            <div class="snapshot-item"><span class="snapshot-label">Adapter mode</span><span class="snapshot-value">{{ view.adapter_mode }}</span></div>
+            <div class="snapshot-item"><span class="snapshot-label">Tool version</span><span class="snapshot-value">{{ view.tool_version }}</span></div>
+          </div>
+        </section>
+
         <section>
           <div class="section-heading">
             <h2>Environment And Config Snapshot</h2>
