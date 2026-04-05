@@ -142,6 +142,22 @@ Artifacts:
 
 Checked-in sample reports live under `examples/temporal/expected/`.
 
+## Report Walkthrough
+
+These screenshots are taken from the generated failing report for `examples/temporal/replaygate.yaml`.
+
+Overview: sticky verdict strip, compact run metadata, and the first diagnosis block.
+
+![Replay Gate HTML report overview](docs/screenshots/report-overview.png)
+
+Failure diagnosis: policy violations, most affected workflow, primary cause, and the recommended next action.
+
+![Replay Gate HTML report diagnosis section](docs/screenshots/report-why-this-failed.png)
+
+Results table: the evidence surface for filtering by workflow and failure kind, then drilling into row details.
+
+![Replay Gate HTML report results table](docs/screenshots/report-results-table.png)
+
 ## Testing
 
 ```bash
