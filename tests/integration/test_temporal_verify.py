@@ -102,9 +102,7 @@ def test_temporal_cli_fails_with_nondeterminism(tmp_path: Path) -> None:
     report = VerificationReport.model_validate_json(
         (tmp_path / "artifacts" / "report.json").read_text(encoding="utf-8")
     )
-    failure_kinds = {
-        replay.failure.kind for replay in report.results if replay.failure is not None
-    }
+    failure_kinds = {replay.failure.kind for replay in report.results if replay.failure is not None}
     assert FailureKind.NONDETERMINISM in failure_kinds
 
 

@@ -66,12 +66,14 @@ def explain(report: Path = REPORT_OPTION) -> None:
         return
 
     for index, result in enumerate(failures, start=1):
+        failure = result.failure
+        assert failure is not None
         console.print(
             f"{index}. {result.workflow_type or 'unknown-workflow'} / {result.artifact.path}\n"
-            f"   kind: {result.failure.kind.value}\n"
-            f"   summary: {result.failure.summary}\n"
-            f"   likely cause: {result.failure.likely_cause}\n"
-            f"   remediation: {result.failure.remediation_hint}"
+            f"   kind: {failure.kind.value}\n"
+            f"   summary: {failure.summary}\n"
+            f"   likely cause: {failure.likely_cause}\n"
+            f"   remediation: {failure.remediation_hint}"
         )
 
 

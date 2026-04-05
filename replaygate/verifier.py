@@ -204,11 +204,12 @@ async def verify_config(
     except Exception as exc:
         return build_environment_error_report(config, config_path, exc)
     selected = select_histories(config, artifacts)
+    results: list[ReplayResult]
 
     if not selected:
         results = [build_missing_history_result(config)]
     else:
-        results: list[ReplayResult] = []
+        results = []
         for artifact in selected:
             try:
                 result = await resolved_adapter.replay_artifact(

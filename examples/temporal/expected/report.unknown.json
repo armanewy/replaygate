@@ -1,0 +1,69 @@
+{
+  "candidate": {
+    "engine": "temporal",
+    "metadata": {},
+    "registered_workflow_types": [
+      "PaymentWorkflow",
+      "RefundWorkflow"
+    ],
+    "source": "examples.temporal.workflows"
+  },
+  "engine": "temporal",
+  "policy": {
+    "observed_failures": 1,
+    "observed_unknown": 1,
+    "passed": false,
+    "violated_rules": [
+      "max_failures=0 -> violated (1 observed)",
+      "max_unknown=0 -> violated (1 observed)",
+      "fail_on=unknown_workflow_type -> violated"
+    ]
+  },
+  "project_name": "replay-gate-examples",
+  "results": [
+    {
+      "artifact": {
+        "checksum_sha256": "cb84b0fdc53f0d1e42b1fced127fa8f7cc229304f62d3281d51ab3f196bc0ba8",
+        "engine": "temporal",
+        "metadata": {
+          "event_count": 10
+        },
+        "path": "histories/legacy_history.json",
+        "size_bytes": 4854,
+        "source_kind": "filesystem",
+        "workflow": {
+          "run_id": "fac85923-3f8c-4bff-a30a-1edf0f849347",
+          "workflow_id": "legacy-demo",
+          "workflow_type": "LegacyWorkflow"
+        }
+      },
+      "compatibility_status": "unknown",
+      "duration_ms": 248.178,
+      "failure": {
+        "details": {},
+        "exception_type": "RuntimeError",
+        "kind": "unknown_workflow_type",
+        "likely_cause": "The history references a workflow type that was not loaded from the candidate module.",
+        "remediation_hint": "Register the missing workflow type in the candidate module or exclude that history from this verification run.",
+        "summary": "Workflow type not registered in the verification environment."
+      },
+      "risk_level": "high",
+      "status": "failed",
+      "workflow_type": "LegacyWorkflow"
+    }
+  ],
+  "run": {
+    "config_path": "examples\\temporal\\replaygate.unknown.yaml",
+    "duration_ms": 454,
+    "finished_at": "2026-04-05T14:38:57.715421Z",
+    "started_at": "2026-04-05T14:38:57.261021Z"
+  },
+  "schema_version": "1",
+  "summary": {
+    "errors": 0,
+    "failed": 1,
+    "passed": 0,
+    "skipped": 0,
+    "total_histories": 1
+  }
+}

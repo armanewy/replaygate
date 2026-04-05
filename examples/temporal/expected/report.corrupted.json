@@ -1,0 +1,63 @@
+{
+  "candidate": {
+    "engine": "temporal",
+    "metadata": {},
+    "registered_workflow_types": [
+      "PaymentWorkflow",
+      "RefundWorkflow"
+    ],
+    "source": "examples.temporal.workflows"
+  },
+  "engine": "temporal",
+  "policy": {
+    "observed_failures": 1,
+    "observed_unknown": 1,
+    "passed": false,
+    "violated_rules": [
+      "max_failures=0 -> violated (1 observed)",
+      "max_unknown=0 -> violated (1 observed)",
+      "fail_on=corrupted_history -> violated"
+    ]
+  },
+  "project_name": "replay-gate-examples",
+  "results": [
+    {
+      "artifact": {
+        "checksum_sha256": "14b3f36a005f062412df3c2f1b90b55180ace98f87b118b52badc3d2be70a466",
+        "engine": "temporal",
+        "metadata": {
+          "event_count": 0
+        },
+        "path": "histories/corrupted_history.json",
+        "size_bytes": 15,
+        "source_kind": "filesystem"
+      },
+      "compatibility_status": "unknown",
+      "duration_ms": 0.009,
+      "failure": {
+        "details": {},
+        "exception_type": "HistoryDecodeError",
+        "kind": "corrupted_history",
+        "likely_cause": "The file was not valid JSON or did not match the expected Temporal history envelope format.",
+        "remediation_hint": "Regenerate the history fixture with the provided script or repair the artifact format before verifying.",
+        "summary": "History artifact could not be decoded."
+      },
+      "risk_level": "medium",
+      "status": "error"
+    }
+  ],
+  "run": {
+    "config_path": "examples\\temporal\\replaygate.corrupted.yaml",
+    "duration_ms": 199,
+    "finished_at": "2026-04-05T14:38:29.198508Z",
+    "started_at": "2026-04-05T14:38:28.998512Z"
+  },
+  "schema_version": "1",
+  "summary": {
+    "errors": 1,
+    "failed": 0,
+    "passed": 0,
+    "skipped": 0,
+    "total_histories": 1
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "candidate": {
+    "engine": "temporal",
+    "metadata": {},
+    "registered_workflow_types": [
+      "PaymentWorkflow",
+      "RefundWorkflow"
+    ],
+    "source": "examples.temporal.workflows"
+  },
+  "engine": "temporal",
+  "policy": {
+    "observed_failures": 0,
+    "observed_unknown": 0,
+    "passed": true,
+    "violated_rules": []
+  },
+  "project_name": "replay-gate-examples",
+  "results": [
+    {
+      "artifact": {
+        "checksum_sha256": "16541cf10b459b54239c93dd16c4b352f276c654b795f66517bb55939864c943",
+        "engine": "temporal",
+        "metadata": {
+          "event_count": 10
+        },
+        "path": "histories/payment_history.json",
+        "size_bytes": 4845,
+        "source_kind": "filesystem",
+        "workflow": {
+          "run_id": "d937925a-22cc-4d5b-ad95-d73312ad1f16",
+          "workflow_id": "payment-demo",
+          "workflow_type": "PaymentWorkflow"
+        }
+      },
+      "compatibility_status": "compatible",
+      "duration_ms": 234.298,
+      "risk_level": "low",
+      "status": "passed",
+      "workflow_type": "PaymentWorkflow"
+    },
+    {
+      "artifact": {
+        "checksum_sha256": "b8112a0b388b0fa9d55a32a05a2e5be4d6edc566dc8311020618ed77ef103f5b",
+        "engine": "temporal",
+        "metadata": {
+          "event_count": 10
+        },
+        "path": "histories/refund_history.json",
+        "size_bytes": 4858,
+        "source_kind": "filesystem",
+        "workflow": {
+          "run_id": "3def14c9-7276-40dc-b8b3-e84c387d6f08",
+          "workflow_id": "refund-demo",
+          "workflow_type": "RefundWorkflow"
+        }
+      },
+      "compatibility_status": "compatible",
+      "duration_ms": 8.378,
+      "risk_level": "low",
+      "status": "passed",
+      "workflow_type": "RefundWorkflow"
+    }
+  ],
+  "run": {
+    "config_path": "examples\\temporal\\replaygate.pass.yaml",
+    "duration_ms": 433,
+    "finished_at": "2026-04-05T14:40:40.494084Z",
+    "started_at": "2026-04-05T14:40:40.060150Z"
+  },
+  "schema_version": "1",
+  "summary": {
+    "errors": 0,
+    "failed": 0,
+    "passed": 2,
+    "skipped": 0,
+    "total_histories": 2
+  }
+}

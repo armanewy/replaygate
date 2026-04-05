@@ -1,0 +1,96 @@
+{
+  "candidate": {
+    "engine": "temporal",
+    "metadata": {},
+    "registered_workflow_types": [
+      "PaymentWorkflow",
+      "RefundWorkflow"
+    ],
+    "source": "examples.temporal.workflows_breaking"
+  },
+  "engine": "temporal",
+  "policy": {
+    "observed_failures": 1,
+    "observed_unknown": 0,
+    "passed": false,
+    "violated_rules": [
+      "max_failures=0 -> violated (1 observed)",
+      "fail_on=nondeterminism -> violated"
+    ]
+  },
+  "project_name": "replay-gate-examples",
+  "results": [
+    {
+      "artifact": {
+        "checksum_sha256": "16541cf10b459b54239c93dd16c4b352f276c654b795f66517bb55939864c943",
+        "engine": "temporal",
+        "metadata": {
+          "event_count": 10
+        },
+        "path": "histories/payment_history.json",
+        "size_bytes": 4845,
+        "source_kind": "filesystem",
+        "workflow": {
+          "run_id": "d937925a-22cc-4d5b-ad95-d73312ad1f16",
+          "workflow_id": "payment-demo",
+          "workflow_type": "PaymentWorkflow"
+        }
+      },
+      "compatibility_status": "incompatible",
+      "duration_ms": 308.627,
+      "failure": {
+        "details": {},
+        "determinism_issue": {
+          "details": {},
+          "likely_cause": "A timer, activity, child workflow, or other workflow command changed relative to the recorded history.",
+          "remediation_hint": "Preserve the old code path for existing histories or add explicit workflow versioning.",
+          "summary": "Temporal detected nondeterministic replay behavior."
+        },
+        "exception_type": "NondeterminismError",
+        "kind": "nondeterminism",
+        "likely_cause": "The candidate workflow emitted a different command sequence than the historical execution.",
+        "remediation_hint": "Review recent workflow code changes and add Temporal versioning or patch gates before deploying.",
+        "summary": "Replay failed due to a command mismatch during replay."
+      },
+      "risk_level": "critical",
+      "status": "failed",
+      "workflow_type": "PaymentWorkflow"
+    },
+    {
+      "artifact": {
+        "checksum_sha256": "b8112a0b388b0fa9d55a32a05a2e5be4d6edc566dc8311020618ed77ef103f5b",
+        "engine": "temporal",
+        "metadata": {
+          "event_count": 10
+        },
+        "path": "histories/refund_history.json",
+        "size_bytes": 4858,
+        "source_kind": "filesystem",
+        "workflow": {
+          "run_id": "3def14c9-7276-40dc-b8b3-e84c387d6f08",
+          "workflow_id": "refund-demo",
+          "workflow_type": "RefundWorkflow"
+        }
+      },
+      "compatibility_status": "compatible",
+      "duration_ms": 9.742,
+      "risk_level": "low",
+      "status": "passed",
+      "workflow_type": "RefundWorkflow"
+    }
+  ],
+  "run": {
+    "config_path": "examples\\temporal\\replaygate.yaml",
+    "duration_ms": 529,
+    "finished_at": "2026-04-05T14:38:29.472152Z",
+    "started_at": "2026-04-05T14:38:28.943002Z"
+  },
+  "schema_version": "1",
+  "summary": {
+    "errors": 0,
+    "failed": 1,
+    "passed": 1,
+    "skipped": 0,
+    "total_histories": 2
+  }
+}

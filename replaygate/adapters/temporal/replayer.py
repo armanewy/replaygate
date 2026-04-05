@@ -5,6 +5,7 @@ from __future__ import annotations
 import importlib
 import inspect
 import logging
+from collections.abc import Iterator
 from contextlib import contextmanager
 
 from temporalio.client import WorkflowHistory
@@ -22,6 +23,8 @@ def load_workflow_definitions(module_name: str) -> tuple[list[type], list[str]]:
         if not hasattr(member, "__temporal_workflow_definition"):
             continue
         definition = _Definition.must_from_class(member)
+        if definition.name is None:
+            raise ValueError(f"Dynamic workflows are not supported in module {module_name}")
         workflows_by_name[definition.name] = member
 
     if not workflows_by_name:
@@ -47,7 +50,7 @@ async def replay_history(
 
 
 @contextmanager
-def suppress_temporal_workflow_logs():
+def suppress_temporal_workflow_logs() -> Iterator[None]:
     logger = logging.getLogger("temporalio.worker._workflow")
     previous_disabled = logger.disabled
     logger.disabled = True

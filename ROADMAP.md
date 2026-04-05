@@ -47,11 +47,11 @@ Ship a working MVP for pre-deploy workflow replay verification with a real Tempo
 
 ### Milestone 5: MVP hardening
 
-- [ ] Architecture documentation
-- [ ] Security and privacy notes
-- [ ] Demo artifacts
-- [ ] End-to-end verification
-- [ ] Final cleanup
+- [x] Architecture documentation
+- [x] Security and privacy notes
+- [x] Demo artifacts
+- [x] End-to-end verification
+- [x] Final cleanup
 
 ## Guardrails
 

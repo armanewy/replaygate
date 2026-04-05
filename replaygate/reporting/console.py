@@ -29,12 +29,14 @@ def render_console_summary(report: VerificationReport) -> str:
         lines.append("")
         lines.append("Top failures:")
         for index, result in enumerate(failures[:5], start=1):
+            failure = result.failure
+            assert failure is not None
             label = f"{result.workflow_type or 'unknown-workflow'} / {result.artifact.path}"
             lines.extend(
                 [
                     f"{index}. {label}",
-                    f"   kind: {result.failure.kind.value}",
-                    f"   summary: {result.failure.summary}",
+                    f"   kind: {failure.kind.value}",
+                    f"   summary: {failure.summary}",
                 ]
             )
 

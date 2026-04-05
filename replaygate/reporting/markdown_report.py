@@ -33,9 +33,7 @@ def render_markdown_report(report: VerificationReport) -> str:
 
     lines.extend(["", "## Results", ""])
     for result in report.results:
-        lines.append(
-            f"### {result.workflow_type or 'unknown-workflow'} / `{result.artifact.path}`"
-        )
+        lines.append(f"### {result.workflow_type or 'unknown-workflow'} / `{result.artifact.path}`")
         lines.append("")
         lines.append(f"- Status: `{result.status.value}`")
         lines.append(f"- Compatibility: `{result.compatibility_status.value}`")
@@ -55,10 +53,12 @@ def render_markdown_report(report: VerificationReport) -> str:
     if failures:
         lines.extend(["## Top Failures", ""])
         for index, result in enumerate(failures[:5], start=1):
+            failure = result.failure
+            assert failure is not None
             workflow_name = result.workflow_type or "unknown-workflow"
             lines.append(f"{index}. `{workflow_name}` / `{result.artifact.path}`")
-            lines.append(f"   - kind: `{result.failure.kind.value}`")
-            lines.append(f"   - summary: {result.failure.summary}")
+            lines.append(f"   - kind: `{failure.kind.value}`")
+            lines.append(f"   - summary: {failure.summary}")
         lines.append("")
 
     return "\n".join(lines).rstrip() + "\n"
